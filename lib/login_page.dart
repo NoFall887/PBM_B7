@@ -17,56 +17,60 @@ class _LoginFormState extends State<LoginForm> {
         title: const Text("Login"),
         centerTitle: true,
       ),
-      body: Form(
-        key: _formKey,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-          alignment: Alignment.bottomCenter,
-          child: SingleChildScrollView(
-            physics: ClampingScrollPhysics(),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                TextForm(formText: "Email", hint: "example@ex.com"),
-                SizedBox(height: 30),
-                TextForm(
-                  formText: "Password",
-                  hint: "Masukkan password",
-                  isPasswordInput: true,
-                ),
-                SizedBox(height: 70),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(MyColor.oren),
-                    foregroundColor: MaterialStateProperty.all(Colors.black),
-                    fixedSize: MaterialStateProperty.all(
-                        Size(MediaQuery.of(context).size.width, 45)),
-                    textStyle: MaterialStateProperty.all(
-                      TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {}
-                  },
-                  child: Text("Masuk"),
-                ),
-                SizedBox(height: 150),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+        alignment: Alignment.bottomCenter,
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
                   children: [
-                    Text("Belum memiliki akun?"),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text("Daftar sekarang"),
+                    TextForm(formText: "Email", hint: "example@ex.com"),
+                    SizedBox(height: 30),
+                    TextForm(
+                      formText: "Password",
+                      hint: "Masukkan password",
+                      isPasswordInput: true,
+                    ),
+                    SizedBox(height: 50),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(MyColor.oren),
+                        foregroundColor:
+                            MaterialStateProperty.all(Colors.black),
+                        fixedSize: MaterialStateProperty.all(
+                            Size(MediaQuery.of(context).size.width, 45)),
+                        textStyle: MaterialStateProperty.all(
+                          TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {}
+                      },
+                      child: Text("Masuk"),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              SizedBox(height: 150),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Belum memiliki akun?"),
+                  TextButton(
+                    onPressed: () {},
+                    child: Text("Daftar sekarang"),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
