@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tourly/colors.dart';
+import 'package:tourly/register_page.dart';
+import 'package:email_validator/email_validator.dart';
 
 class LoginForm extends StatefulWidget {
   LoginForm({Key? key}) : super(key: key);
@@ -10,6 +12,8 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
+  String email = "";
+  String password = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +23,7 @@ class _LoginFormState extends State<LoginForm> {
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-        alignment: Alignment.bottomCenter,
+        alignment: Alignment.center,
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           child: Column(
@@ -28,34 +32,12 @@ class _LoginFormState extends State<LoginForm> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    TextForm(formText: "Email", hint: "example@ex.com"),
-                    SizedBox(height: 30),
-                    TextForm(
-                      formText: "Password",
-                      hint: "Masukkan password",
-                      isPasswordInput: true,
-                    ),
+                    EmailInput(),
+                    SizedBox(height: 20),
+                    PasswordInput(),
+                    SizedBox(height: 20),
                     SizedBox(height: 50),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(MyColor.oren),
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.black),
-                        fixedSize: MaterialStateProperty.all(
-                            Size(MediaQuery.of(context).size.width, 45)),
-                        textStyle: MaterialStateProperty.all(
-                          TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {}
-                      },
-                      child: Text("Masuk"),
-                    ),
+                    LoginBtn(),
                   ],
                 ),
               ),
@@ -65,7 +47,16 @@ class _LoginFormState extends State<LoginForm> {
                 children: [
                   Text("Belum memiliki akun?"),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return RegisterForm();
+                          },
+                        ),
+                      );
+                    },
                     child: Text("Daftar sekarang"),
                   ),
                 ],
@@ -76,34 +67,71 @@ class _LoginFormState extends State<LoginForm> {
       ),
     );
   }
-}
 
-class TextForm extends StatelessWidget {
-  final String formText;
-  final String hint;
-  final bool isPasswordInput;
-  const TextForm({
-    Key? key,
-    required this.formText,
-    required this.hint,
-    this.isPasswordInput = false,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget EmailInput() {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: formText,
-        hintText: hint,
+        labelText: "Email",
         border: UnderlineInputBorder(),
       ),
-      obscureText: isPasswordInput,
       validator: (input) {
         if (input!.isEmpty) {
-          return "${formText} tidak boleh kosong";
+          return "Email tidak boleh kosong";
+        } else if (!EmailValidator.validate(input, true)) {
+          return "Email tidak valid";
         }
         return null;
       },
+      onSaved: (value) {
+        setState(() {
+          email = value!;
+        });
+      },
+    );
+  }
+
+  Widget PasswordInput() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: "Password",
+        border: UnderlineInputBorder(),
+      ),
+      validator: (input) {
+        if (input!.isEmpty) {
+          return "password tidak boleh kosong";
+        }
+        return null;
+      },
+      onSaved: (value) {
+        setState(() {
+          password = value!;
+        });
+      },
+    );
+  }
+
+  Widget LoginBtn() {
+    return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(MyColor.oren),
+        foregroundColor: MaterialStateProperty.all(Colors.black),
+        fixedSize: MaterialStateProperty.all(
+            Size(MediaQuery.of(context).size.width, 50)),
+        textStyle: MaterialStateProperty.all(
+          TextStyle(
+            fontFamily: "Poppins",
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+      ),
+      onPressed: () {
+        final isValid = _formKey.currentState!.validate();
+        if (isValid) {
+          _formKey.currentState?.save();
+        }
+      },
+      child: Text("Masuk"),
     );
   }
 }
