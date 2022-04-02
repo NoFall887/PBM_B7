@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tourly/history_page.dart';
 import 'package:tourly/login_page.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
       title: "Tourly",
-      home: LoginForm(),
+      home: HistoryPage(),
     );
   }
 }
