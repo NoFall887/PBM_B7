@@ -13,7 +13,7 @@ class HistoryPage extends StatelessWidget {
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 40, horizontal: 22),
+        padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -21,17 +21,17 @@ class HistoryPage extends StatelessWidget {
               "Riwayat pemesanan anda",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 22,
+                fontSize: 18,
               ),
             ),
             SizedBox(height: 30),
-            transactionCategoryBtn(
-              displayText: "Transaksi yang sedang berlangsung",
+            WhiteLongButton(
+              displayText: "Transaksi sedang berlangsung",
             ),
             SizedBox(height: 30),
-            transactionCategoryBtn(displayText: "Transaksi berhasil"),
+            WhiteLongButton(displayText: "Transaksi berhasil"),
             SizedBox(height: 30),
-            transactionCategoryBtn(displayText: "Transaksi dibatalkan"),
+            WhiteLongButton(displayText: "Transaksi dibatalkan"),
             SizedBox(height: 30),
             SizedBox(height: 30),
           ],
@@ -41,10 +41,10 @@ class HistoryPage extends StatelessWidget {
   }
 }
 
-class transactionCategoryBtn extends StatelessWidget {
+class WhiteLongButton extends StatelessWidget {
   final String displayText;
   // final Function routerFunction;
-  const transactionCategoryBtn({
+  const WhiteLongButton({
     Key? key,
     required this.displayText,
     // this.routerFunction = ,
@@ -60,7 +60,7 @@ class transactionCategoryBtn extends StatelessWidget {
         children: [
           Text(
             this.displayText,
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: 14),
           ),
           Icon(Icons.arrow_forward_ios)
         ],
@@ -69,10 +69,10 @@ class transactionCategoryBtn extends StatelessWidget {
         backgroundColor: MaterialStateProperty.all(Colors.white),
         foregroundColor: MaterialStateProperty.all(Colors.black),
         fixedSize: MaterialStateProperty.all(
-          Size(MediaQuery.of(context).size.width, 60),
+          Size(MediaQuery.of(context).size.width, 50),
         ),
         padding: MaterialStateProperty.all(
-          EdgeInsets.symmetric(horizontal: 20),
+          EdgeInsets.symmetric(horizontal: 10),
         ),
       ),
     );
