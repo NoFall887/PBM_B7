@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
   final dummyHotelList = <Map>[
     {
       'link':
-          "https://cdn.pixabay.com/photo/2016/04/25/22/41/cat-1353325_960_720.jpg",
+          "https://img.okezone.com/content/2021/03/20/406/2381202/5-hotel-di-tangerang-harganya-di-bawah-rp100-ribu-FdFIttej5V.jpg",
       'rating': 4,
       'nama': "Hotel maju sejahtera",
       'harga': 400000,
@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
     },
     {
       'link':
-          "https://cdn.pixabay.com/photo/2017/11/30/12/35/cat-2988354_960_720.jpg",
+          "https://img.inews.co.id/media/600/files/inews_new/2021/10/08/hotel_citradream_bintaro.jpg",
       'rating': 4.5,
       'nama': "Hotel sukamaju",
       'harga': 440000,
@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
     },
     {
       'link':
-          "https://t4.ftcdn.net/jpg/00/90/42/33/240_F_90423384_EPURKnsID1eC8GX5lZU84nscT3MQSh6X.jpg",
+          "https://imgcy.trivago.com/c_lfill,d_dummy.jpeg,e_sharpen:60,f_auto,h_450,q_auto,w_450/itemimages/68/47/6847396.jpeg",
       'rating': 5,
       'nama': "Hotel sukamundur",
       'harga': 450000,
@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
     },
     {
       'link':
-          "https://cdn.pixabay.com/photo/2016/04/25/22/41/cat-1353325_960_720.jpg",
+          "https://dkgzabag3frbh.cloudfront.net/attachments/room_type_photos/images/610463/610463/standard_IMG_6640.jpg",
       'rating': 4,
       'nama': "Hotel maju sejahtera",
       'harga': 400000,
@@ -48,9 +48,9 @@ class HomePage extends StatelessWidget {
     },
     {
       'link':
-          "https://cdn.pixabay.com/photo/2017/11/30/12/35/cat-2988354_960_720.jpg",
+          "https://media-cdn.tripadvisor.com/media/photo-s/0f/76/68/b1/twin-room.jpg",
       'rating': 4.5,
-      'nama': "Hotel sukamaju",
+      'nama': "Hotel apalah",
       'harga': 440000,
       'diskon': 250000
     },
@@ -58,13 +58,11 @@ class HomePage extends StatelessWidget {
       'link':
           "https://t4.ftcdn.net/jpg/00/90/42/33/240_F_90423384_EPURKnsID1eC8GX5lZU84nscT3MQSh6X.jpg",
       'rating': 5,
-      'nama': "Hotel sukamundur",
+      'nama': "Hotel mboh",
       'harga': 450000,
       'diskon': 370000
     },
   ];
-
-  final numList = List.generate(50, (index) => index.toString());
 
   CarouselController buttonCarouselController = CarouselController();
   @override
@@ -78,16 +76,19 @@ class HomePage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             hotelCarouselSlider(),
-            DiscountListView(),
+            SizedBox(height: 20),
+            discountListView(),
           ],
         ),
       ),
     );
   }
 
-  Widget DiscountListView() {
+  // Hotel list components
+  Widget discountListView() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+      color: Colors.white,
       child: ListView.separated(
         separatorBuilder: (context, index) => SizedBox(height: 10),
         shrinkWrap: true,
@@ -113,57 +114,9 @@ class HomePage extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Flexible(
-                  flex: 3,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: AspectRatio(
-                      aspectRatio: 4 / 3,
-                      child: Image.network(
-                        data["link"],
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
+                thumbnailImage(data),
                 SizedBox(width: 10),
-                Flexible(
-                  flex: 4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        data["nama"],
-                        overflow: TextOverflow.fade,
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        currencyFormat.format(
-                          data["harga"],
-                        ),
-                        style: TextStyle(
-                            color: Colors.red,
-                            decoration: TextDecoration.lineThrough),
-                      ),
-                      Text(
-                        currencyFormat.format(
-                          data["diskon"],
-                        ),
-                      ),
-                      RatingBarIndicator(
-                        itemBuilder: (context, index) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        itemSize: 20,
-                        rating: data["rating"].toDouble(),
-                        unratedColor: Colors.amber.withOpacity(0.5),
-                      )
-                    ],
-                  ),
-                )
+                briefDetail(data, currencyFormat),
               ],
             ),
           );
@@ -172,11 +125,67 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Widget thumbnailImage(Map data) {
+    return Flexible(
+      flex: 4,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: AspectRatio(
+          aspectRatio: 1 / 1,
+          child: Image.network(
+            data["link"],
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget briefDetail(Map data, NumberFormat currencyFormat) {
+    return Flexible(
+      flex: 7,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            data["nama"],
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+          ),
+          SizedBox(height: 20),
+          Text(
+            currencyFormat.format(
+              data["harga"],
+            ),
+            style: TextStyle(
+                color: Colors.red, decoration: TextDecoration.lineThrough),
+          ),
+          Text(
+            currencyFormat.format(
+              data["diskon"],
+            ),
+          ),
+          RatingBarIndicator(
+            itemBuilder: (context, index) => Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            itemSize: 20,
+            rating: data["rating"].toDouble(),
+            unratedColor: Colors.amber.withOpacity(0.5),
+          )
+        ],
+      ),
+    );
+  }
+  // HOTEL CAROUSEL COMPONENTS
+
   Widget backButton() {
     return Positioned(
       left: 0,
       child: IconButton(
-        color: Colors.white,
+        // color: Colors.white,
         onPressed: () {
           buttonCarouselController.previousPage(
               duration: Duration(milliseconds: 400));
@@ -193,7 +202,7 @@ class HomePage extends StatelessWidget {
     return Positioned(
       right: 0,
       child: IconButton(
-        color: Colors.white,
+        // color: Colors.white,
         onPressed: () {
           buttonCarouselController.nextPage(
               duration: Duration(milliseconds: 400));
@@ -206,26 +215,52 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Widget HotelName(Map data, BuildContext context) {
+    return Positioned(
+      bottom: 0,
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        color: Colors.white.withOpacity(0.7),
+        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        alignment: Alignment.center,
+        child: Text(
+          data["nama"],
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget hotelCarouselSlider() {
     return Stack(
       alignment: Alignment.center,
       children: [
         CarouselSlider.builder(
-          itemCount: 3,
+          itemCount: dummyHotelList.length,
           carouselController: buttonCarouselController,
           itemBuilder: (context, itemIndex, index) {
-            return Container(
-              height: 200,
-              child: Image.network(
-                dummyItem[itemIndex],
-                fit: BoxFit.fill,
-              ),
+            var data = dummyHotelList[itemIndex];
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                Image.network(
+                  data["link"],
+                  fit: BoxFit.cover,
+                  height: MediaQuery.of(context).size.height,
+                ),
+                HotelName(data, context),
+              ],
             );
           },
           options: CarouselOptions(
             viewportFraction: 1,
             autoPlay: true,
             autoPlayInterval: Duration(seconds: 7),
+            enlargeCenterPage: true,
+            height: 300,
           ),
         ),
         forwardButton(),
