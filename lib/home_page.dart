@@ -99,9 +99,7 @@ class HomePage extends StatelessWidget {
           final currencyFormat =
               NumberFormat.currency(locale: "id_ID", symbol: "Rp.");
           return Container(
-            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.white,
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.25),
@@ -110,14 +108,27 @@ class HomePage extends StatelessWidget {
                   spreadRadius: 3,
                 ),
               ],
-              borderRadius: BorderRadius.circular(8),
             ),
-            child: Row(
-              children: [
-                thumbnailImage(data),
-                SizedBox(width: 10),
-                briefDetail(data, currencyFormat),
-              ],
+            child: Material(
+              child: InkWell(
+                onTap: () {
+                  print("object");
+                },
+                child: Ink(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      thumbnailImage(data),
+                      SizedBox(width: 10),
+                      briefDetail(data, currencyFormat),
+                    ],
+                  ),
+                ),
+              ),
             ),
           );
         },
