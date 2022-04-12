@@ -87,51 +87,61 @@ class HomePage extends StatelessWidget {
   // Hotel list components
   Widget discountListView() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       color: Colors.white,
-      child: ListView.separated(
-        separatorBuilder: (context, index) => SizedBox(height: 10),
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: dummyHotelList.length,
-        itemBuilder: (BuildContext context, int index) {
-          var data = dummyHotelList[index];
-          final currencyFormat =
-              NumberFormat.currency(locale: "id_ID", symbol: "Rp.");
-          return Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.25),
-                  offset: Offset(0, 4),
-                  blurRadius: 6,
-                  spreadRadius: 3,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Diskon untuk anda",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
+          SizedBox(height: 15),
+          ListView.separated(
+            separatorBuilder: (context, index) => SizedBox(height: 10),
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: dummyHotelList.length,
+            itemBuilder: (BuildContext context, int index) {
+              var data = dummyHotelList[index];
+              final currencyFormat =
+                  NumberFormat.currency(locale: "id_ID", symbol: "Rp.");
+              return Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.25),
+                      offset: Offset(0, 4),
+                      blurRadius: 6,
+                      spreadRadius: 3,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: Material(
-              child: InkWell(
-                onTap: () {
-                  print("object");
-                },
-                child: Ink(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      thumbnailImage(data),
-                      SizedBox(width: 10),
-                      briefDetail(data, currencyFormat),
-                    ],
+                child: Material(
+                  child: InkWell(
+                    onTap: () {
+                      print("object");
+                    },
+                    child: Ink(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        children: [
+                          thumbnailImage(data),
+                          SizedBox(width: 10),
+                          briefDetail(data, currencyFormat),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          );
-        },
+              );
+            },
+          ),
+        ],
       ),
     );
   }
