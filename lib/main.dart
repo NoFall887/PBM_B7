@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tourly/history_page.dart';
 import 'package:tourly/home_page.dart';
+import 'package:tourly/hotel_detail_page.dart';
 import 'package:tourly/login_page.dart';
 import 'package:tourly/profile_page.dart';
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
       title: "Tourly",
-      home: HomePage(),
+      home: HotelDetail(),
     );
   }
 }
