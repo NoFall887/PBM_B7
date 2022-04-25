@@ -1,6 +1,4 @@
-import 'dart:html';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:tourly/history_page.dart';
 import 'package:tourly/home_page.dart';
 import 'package:tourly/profile_page.dart';
