@@ -108,7 +108,7 @@ class _SearchPageState extends State<SearchPage> {
                 MainBtn(
                   btnText: "Cari",
                   onPressed: () {
-                    print("pressed");
+                    Navigator.pop(context);
                   },
                 )
               ],
