@@ -2,7 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:tourly/login_page.dart';
 
-import 'colors.dart';
+import 'widgets/colors.dart';
 
 class RegisterForm extends StatefulWidget {
   RegisterForm({Key? key}) : super(key: key);

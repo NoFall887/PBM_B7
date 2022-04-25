@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tourly/colors.dart';
+import 'package:tourly/widgets/colors.dart';
 import 'package:tourly/register_page.dart';
 import 'package:email_validator/email_validator.dart';
 

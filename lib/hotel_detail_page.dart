@@ -4,8 +4,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:tourly/colors.dart';
-import 'package:tourly/facility.dart';
+import 'package:tourly/widgets/colors.dart';
+import 'package:tourly/widgets/facility.dart';
 
 const hotelPhotoList = <String>[
   "https://pbsu.pphotels.com/application/sites/pbsu/userfiles/header/_thumbs/4.jpg",
