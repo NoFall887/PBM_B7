@@ -133,7 +133,6 @@ class Wishlist extends StatelessWidget {
 
   Widget thumbnailImage(Map data) {
     return Expanded(
-      // flex: 1,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: AspectRatio(
