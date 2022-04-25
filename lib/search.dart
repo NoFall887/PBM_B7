@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:tourly/widgets/main_btn.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -97,12 +98,19 @@ class _SearchPageState extends State<SearchPage> {
             child: Column(
               children: [
                 penginapanTerdekat(),
-                // SizedBox(height: 4),
+                SizedBox(height: 4),
                 tanggal(context),
-                // SizedBox(height: 4),
+                SizedBox(height: 4),
                 kamar(),
-                // SizedBox(height: 4),
-                filterBtn(context)
+                SizedBox(height: 20),
+                filterBtn(context),
+                SizedBox(height: 50),
+                MainBtn(
+                  btnText: "Cari",
+                  onPressed: () {
+                    print("pressed");
+                  },
+                )
               ],
             ),
           ),
@@ -183,6 +191,7 @@ class _SearchPageState extends State<SearchPage> {
           size: 25,
           color: Colors.blue.shade400,
         ),
+        SizedBox(width: 10),
         Expanded(
           child: TextFormField(
             decoration: InputDecoration(
@@ -196,7 +205,11 @@ class _SearchPageState extends State<SearchPage> {
   Widget filterBtn(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.filter_alt_rounded),
+        Icon(
+          Icons.filter_alt_rounded,
+          size: 25,
+          color: Colors.blue.shade400,
+        ),
         Expanded(
           child: TextButton(
             onPressed: () {
