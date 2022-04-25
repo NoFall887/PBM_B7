@@ -115,8 +115,9 @@ class Wishlist extends StatelessWidget {
                       child: Row(
                         children: [
                           thumbnailImage(data),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 50),
                           briefDetail(data, currencyFormat),
+                          Favorite(data),
                         ],
                       ),
                     ),
@@ -146,17 +147,33 @@ class Wishlist extends StatelessWidget {
     );
   }
 
+  Widget Favorite(Map data) {
+    return Flexible(
+      flex: 5,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FavoriteButton(
+            isFavorite: true,
+            valueChanged: (_isFavorite) {},
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget briefDetail(Map data, NumberFormat currencyFormat) {
     return Flexible(
       flex: 10,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             data["nama"],
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
           ),
           SizedBox(height: 20),
           Text(
@@ -180,10 +197,10 @@ class Wishlist extends StatelessWidget {
             rating: data["rating"].toDouble(),
             unratedColor: Colors.amber.withOpacity(0.5),
           ),
-          FavoriteButton(
-            isFavorite: true,
-            valueChanged: (_isFavorite) {},
-          ),
+          // FavoriteButton(
+          //   isFavorite: true,
+          //   valueChanged: (_isFavorite) {},
+          // ),
         ],
       ),
     );
