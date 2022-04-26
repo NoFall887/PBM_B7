@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tourly/bottom_navigation_bar.dart';
 import 'package:tourly/widgets/colors.dart';
 import 'package:tourly/register_page.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:tourly/widgets/main_btn.dart';
 
 class LoginForm extends StatefulWidget {
   LoginForm({Key? key}) : super(key: key);
@@ -37,7 +39,21 @@ class _LoginFormState extends State<LoginForm> {
                     PasswordInput(),
                     SizedBox(height: 20),
                     SizedBox(height: 50),
-                    LoginBtn(),
+                    MainBtn(
+                      btnText: "Login",
+                      onPressed: () {
+                        final isValid = _formKey.currentState!.validate();
+                        if (isValid) {
+                          _formKey.currentState?.save();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Navbar(),
+                            ),
+                          );
+                        }
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -107,31 +123,7 @@ class _LoginFormState extends State<LoginForm> {
           password = value!;
         });
       },
-    );
-  }
-
-  Widget LoginBtn() {
-    return ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(MyColor.oren),
-        foregroundColor: MaterialStateProperty.all(Colors.black),
-        fixedSize: MaterialStateProperty.all(
-            Size(MediaQuery.of(context).size.width, 50)),
-        textStyle: MaterialStateProperty.all(
-          TextStyle(
-            fontFamily: "Poppins",
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-      ),
-      onPressed: () {
-        final isValid = _formKey.currentState!.validate();
-        if (isValid) {
-          _formKey.currentState?.save();
-        }
-      },
-      child: Text("Masuk"),
+      obscureText: true,
     );
   }
 }

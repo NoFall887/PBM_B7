@@ -1,4 +1,3 @@
-import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tourly/history_page.dart';
@@ -32,12 +31,12 @@ class _NavbarState extends State<Navbar> {
         unselectedItemColor: Colors.white54,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        iconSize: 40,
+        iconSize: 34,
         currentIndex: currentIndex,
         onTap: (index) => setState(() => currentIndex = index),
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
+            icon: Icon(Icons.shopping_bag_rounded),
             label: 'Wishlist',
           ),
           BottomNavigationBarItem(

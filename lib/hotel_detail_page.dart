@@ -8,10 +8,10 @@ import 'package:tourly/widgets/colors.dart';
 import 'package:tourly/widgets/facility.dart';
 
 const hotelPhotoList = <String>[
-  "https://pbsu.pphotels.com/application/sites/pbsu/userfiles/header/_thumbs/4.jpg",
-  "https://images.trvl-media.com/hotels/21000000/20150000/20143900/20143855/3bdffe71.jpg?impolicy=fcrop&w=670&h=385&p=1&q=medium",
-  "https://exp.cdn-hotels.com/hotels/21000000/20150000/20143900/20143855/47ba66db_z.jpg?impolicy=fcrop&w=500&h=333&q=medium",
-  "https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/t_htl-dskt/tix-hotel/images-web/2020/10/29/d2e35af8-c602-4708-b83f-6ab95c8c2efb-1603925423306-ab33fffc71898885cfdd39247292a45e.jpg"
+  "https://cdn.pixabay.com/photo/2019/08/19/13/58/bed-4416515__340.jpg",
+  "https://cdn.pixabay.com/photo/2019/08/19/13/58/bed-4416515__340.jpg",
+  "https://cdn.pixabay.com/photo/2019/08/19/13/58/bed-4416515__340.jpg",
+  "https://cdn.pixabay.com/photo/2019/08/19/13/58/bed-4416515__340.jpg",
 ];
 
 const Map hotelData = {
@@ -34,12 +34,10 @@ class _HotelDetailState extends State<HotelDetail> {
   final NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'id_ID', symbol: 'Rp.', decimalDigits: 0);
   int activeIndex = 0;
-  final _bottomBarKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back_rounded),
         title: Text("Detail Hotel"),
       ),
       body: SafeArea(
@@ -81,9 +79,10 @@ class _HotelDetailState extends State<HotelDetail> {
           itemBuilder: (context, itemIndex, index) {
             var data = hotelPhotoList[itemIndex];
             return Container(
+              width: MediaQuery.of(context).size.width,
               child: Image.network(
                 data,
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
                 height: MediaQuery.of(context).size.height,
               ),
             );
@@ -223,7 +222,6 @@ class _HotelDetailState extends State<HotelDetail> {
 
   Widget bottomBar() {
     return Container(
-      key: _bottomBarKey,
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
           color: Colors.grey.withOpacity(0.3),

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:tourly/hotel_detail_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -16,9 +17,9 @@ class HomePage extends StatelessWidget {
   final dummyHotelList = <Map>[
     {
       'link':
-          "https://img.okezone.com/content/2021/03/20/406/2381202/5-hotel-di-tangerang-harganya-di-bawah-rp100-ribu-FdFIttej5V.jpg",
+          "https://img.inews.co.id/media/600/files/inews_new/2021/10/08/hotel_citradream_bintaro.jpg",
       'rating': 4,
-      'nama': "Hotel maju sejahtera",
+      'nama': "Hotel maju",
       'harga': 400000,
       'diskon': 375000
     },
@@ -34,13 +35,13 @@ class HomePage extends StatelessWidget {
       'link':
           "https://imgcy.trivago.com/c_lfill,d_dummy.jpeg,e_sharpen:60,f_auto,h_450,q_auto,w_450/itemimages/68/47/6847396.jpeg",
       'rating': 5,
-      'nama': "Hotel sukamundur",
+      'nama': "Hotel Jaya",
       'harga': 450000,
       'diskon': 370000
     },
     {
       'link':
-          "https://dkgzabag3frbh.cloudfront.net/attachments/room_type_photos/images/610463/610463/standard_IMG_6640.jpg",
+          "https://img.inews.co.id/media/600/files/inews_new/2021/10/08/hotel_citradream_bintaro.jpg",
       'rating': 4,
       'nama': "Hotel maju sejahtera",
       'harga': 400000,
@@ -58,7 +59,7 @@ class HomePage extends StatelessWidget {
       'link':
           "https://t4.ftcdn.net/jpg/00/90/42/33/240_F_90423384_EPURKnsID1eC8GX5lZU84nscT3MQSh6X.jpg",
       'rating': 5,
-      'nama': "Hotel mboh",
+      'nama': "Hotel Asgard",
       'harga': 450000,
       'diskon': 370000
     },
@@ -69,6 +70,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Home"),
       ),
       body: SingleChildScrollView(
@@ -120,7 +122,12 @@ class HomePage extends StatelessWidget {
                 child: Material(
                   child: InkWell(
                     onTap: () {
-                      print("object");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HotelDetail(),
+                        ),
+                      );
                     },
                     child: Ink(
                       padding: EdgeInsets.all(10),

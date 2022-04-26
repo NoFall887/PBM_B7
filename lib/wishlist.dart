@@ -112,12 +112,20 @@ class Wishlist extends StatelessWidget {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Row(
+                      child: Stack(
+                        alignment: Alignment.center,
                         children: [
-                          thumbnailImage(data),
-                          const SizedBox(width: 10),
-                          briefDetail(data, currencyFormat),
-                          Favorite(data),
+                          Row(
+                            children: [
+                              thumbnailImage(data),
+                              const SizedBox(width: 10),
+                              briefDetail(data, currencyFormat),
+                            ],
+                          ),
+                          Positioned(
+                            right: 0,
+                            child: Favorite(data),
+                          )
                         ],
                       ),
                     ),
@@ -133,6 +141,7 @@ class Wishlist extends StatelessWidget {
 
   Widget thumbnailImage(Map data) {
     return Expanded(
+      flex: 3,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: AspectRatio(
@@ -150,6 +159,7 @@ class Wishlist extends StatelessWidget {
     return Container(
       alignment: Alignment.centerRight,
       child: FavoriteButton(
+        iconSize: 40,
         isFavorite: true,
         valueChanged: (_isFavorite) {},
       ),
@@ -158,7 +168,7 @@ class Wishlist extends StatelessWidget {
 
   Widget briefDetail(Map data, NumberFormat currencyFormat) {
     return Expanded(
-      flex: 2,
+      flex: 6,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
