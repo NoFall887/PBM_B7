@@ -138,7 +138,7 @@ class _SearchPageState extends State<SearchPage> {
         SizedBox(width: 4),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(), padding: const EdgeInsets.all(15)),
+              shape: const CircleBorder(), padding: const EdgeInsets.all(10)),
           child: const Icon(Icons.gps_fixed_rounded),
           onPressed: () {},
         ),
