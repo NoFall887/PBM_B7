@@ -10,7 +10,8 @@ import 'package:tourly/transaction_succes.dart';
 import 'package:tourly/ulasan.dart';
 import 'package:tourly/wishlist.dart';
 import 'package:tourly/bottom_navigation_bar.dart';
-import 'package:tourly/camera_page.dart';
+// import 'package:tourly/camera_page.dart';
+import 'package:tourly/upload_file.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
       title: "Tourly",
-      home: Camera(),
+      home: Upload(),
     );
   }
 }

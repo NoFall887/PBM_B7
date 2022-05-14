@@ -25,19 +25,19 @@ class _CameraState extends State<Camera> {
     super.dispose();
   }
 
-  Future<File> takePicture() async {
-    Directory root = await getTemporaryDirectory();
-    String directorypath = '${root.path}/Guided_Camera';
-    await Directory(directorypath).create(recursive: true);
-    String filepath = '$directorypath/${DateTime.now()}.jpg';
+  // Future<File> takePicture() async {
+  //   Directory root = await getTemporaryDirectory();
+  //   String directorypath = '${root.path}/Guided_Camera';
+  //   await Directory(directorypath).create(recursive: true);
+  //   String filepath = '$directorypath/${DateTime.now()}.jpg';
 
-    try {
-      await controller.takePicture(filepath);
-    } catch (e) {
-      return null;
-    }
-    return File(filepath);
-  }
+  //   try {
+  //     await controller.takePicture(filepath);
+  //   } catch (e) {
+  //     return null;
+  //   }
+  //   return File(filepath);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -58,19 +58,20 @@ class _CameraState extends State<Camera> {
                                 child: CameraPreview(controller),
                               ),
                               Container(
-                                  width: 70,
-                                  height: 70,
-                                  margin: EdgeInsets.only(top: 50),
-                                  child: RaisedButton(
-                                    onPressed: () async {
-                                      if (!controller.value.isTakingPicture) {
-                                        File result = await takePicture();
-                                        Navigator.pop(context, result);
-                                      }
-                                    },
-                                    shape: CircleBorder(),
-                                    color: Colors.blue,
-                                  )),
+                                width: 70,
+                                height: 70,
+                                margin: EdgeInsets.only(top: 50),
+                                // child: RaisedButton(
+                                //   onPressed: () async {
+                                //     if (!controller.value.isTakingPicture) {
+                                //       File result = await takePicture();
+                                //       Navigator.pop(context, result);
+                                //     }
+                                //   },
+                                //   shape: CircleBorder(),
+                                //   color: Colors.blue,
+                                // )),
+                              ),
                             ],
                           ),
                         ],
