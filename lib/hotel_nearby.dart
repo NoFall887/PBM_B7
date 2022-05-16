@@ -86,9 +86,8 @@ class _HotelNearbyState extends State<HotelNearby> {
 
   Widget hotelList() {
     return Container(
-      // padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-      color: Colors.white,
       child: ListView.separated(
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         separatorBuilder: (context, index) => SizedBox(height: 10),
         itemCount: _sortedHotel.length,
         itemBuilder: (BuildContext context, int index) {

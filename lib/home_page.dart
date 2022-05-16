@@ -288,7 +288,7 @@ class HomePage extends StatelessWidget {
             autoPlay: true,
             autoPlayInterval: Duration(seconds: 7),
             enlargeCenterPage: true,
-            height: 300,
+            height: 250,
           ),
         ),
         forwardButton(),

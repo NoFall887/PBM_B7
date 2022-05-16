@@ -30,7 +30,7 @@ class _NavbarState extends State<Navbar> {
         unselectedItemColor: Colors.white54,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        iconSize: 34,
+        iconSize: 30,
         currentIndex: currentIndex,
         onTap: (index) => setState(() => currentIndex = index),
         items: [
