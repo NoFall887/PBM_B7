@@ -19,23 +19,23 @@ class HomePage extends StatelessWidget {
       'link':
           "https://img.inews.co.id/media/600/files/inews_new/2021/10/08/hotel_citradream_bintaro.jpg",
       'rating': 4,
-      'nama': "Hotel maju",
-      'harga': 400000,
-      'diskon': 375000
+      'nama': "Grand Darmo Suite",
+      'harga': 283000,
+      'diskon': 250000
     },
     {
       'link':
           "https://img.inews.co.id/media/600/files/inews_new/2021/10/08/hotel_citradream_bintaro.jpg",
       'rating': 4.5,
-      'nama': "Hotel sukamaju",
+      'nama': "Ibis Surabaya City",
       'harga': 440000,
-      'diskon': 250000
+      'diskon': 300000
     },
     {
       'link':
           "https://imgcy.trivago.com/c_lfill,d_dummy.jpeg,e_sharpen:60,f_auto,h_450,q_auto,w_450/itemimages/68/47/6847396.jpeg",
       'rating': 5,
-      'nama': "Hotel Jaya",
+      'nama': "Midtown Hotel Surabaya",
       'harga': 450000,
       'diskon': 370000
     },
@@ -43,23 +43,23 @@ class HomePage extends StatelessWidget {
       'link':
           "https://img.inews.co.id/media/600/files/inews_new/2021/10/08/hotel_citradream_bintaro.jpg",
       'rating': 4,
-      'nama': "Hotel maju sejahtera",
+      'nama': "Favehotel Tunjungan",
       'harga': 400000,
       'diskon': 375000
     },
     {
       'link':
           "https://media-cdn.tripadvisor.com/media/photo-s/0f/76/68/b1/twin-room.jpg",
-      'rating': 4.5,
-      'nama': "Hotel apalah",
+      'rating': 4.2,
+      'nama': "Garden Palace Hotel Surabaya",
       'harga': 440000,
       'diskon': 250000
     },
     {
       'link':
           "https://t4.ftcdn.net/jpg/00/90/42/33/240_F_90423384_EPURKnsID1eC8GX5lZU84nscT3MQSh6X.jpg",
-      'rating': 5,
-      'nama': "Hotel Asgard",
+      'rating': 4.5,
+      'nama': "Novotel Samator East Surabay",
       'harga': 450000,
       'diskon': 370000
     },
