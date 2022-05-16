@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
       title: "Tourly",
-      home: HistoryPage(),
+      home: Navbar(),
     );
   }
 }
