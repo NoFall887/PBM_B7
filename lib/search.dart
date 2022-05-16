@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:tourly/hotel_nearby.dart';
 import 'package:tourly/widgets/main_btn.dart';
 
 class SearchPage extends StatefulWidget {
@@ -140,7 +141,10 @@ class _SearchPageState extends State<SearchPage> {
           style: ElevatedButton.styleFrom(
               shape: const CircleBorder(), padding: const EdgeInsets.all(10)),
           child: const Icon(Icons.gps_fixed_rounded),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => HotelNearby()));
+          },
         ),
       ],
     );
