@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:tourly/transaction_succes.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({Key? key}) : super(key: key);
@@ -27,11 +30,23 @@ class HistoryPage extends StatelessWidget {
             SizedBox(height: 30),
             WhiteLongButton(
               displayText: "Transaksi sedang berlangsung",
+              onPressed: () {},
             ),
             SizedBox(height: 30),
-            WhiteLongButton(displayText: "Transaksi berhasil"),
+            WhiteLongButton(
+              displayText: "Transaksi berhasil",
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => Transaction_Suc())));
+              },
+            ),
             SizedBox(height: 30),
-            WhiteLongButton(displayText: "Transaksi dibatalkan"),
+            WhiteLongButton(
+              displayText: "Transaksi dibatalkan",
+              onPressed: () {},
+            ),
             SizedBox(height: 30),
             SizedBox(height: 30),
           ],
@@ -43,17 +58,17 @@ class HistoryPage extends StatelessWidget {
 
 class WhiteLongButton extends StatelessWidget {
   final String displayText;
-  // final Function routerFunction;
+  final Function() onPressed;
   const WhiteLongButton({
     Key? key,
     required this.displayText,
-    // this.routerFunction = ,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: onPressed,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,

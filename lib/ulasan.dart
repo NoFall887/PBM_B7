@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:tourly/upload_file.dart';
 import 'package:tourly/widgets/colors.dart';
 import 'package:tourly/widgets/facility.dart';
 import 'package:tourly/widgets/main_btn.dart';
@@ -57,7 +58,7 @@ class Ulasan extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: 20),
-            TiketListView(),
+            TiketListView(context),
           ],
         ),
       ),
@@ -115,7 +116,7 @@ class Ulasan extends StatelessWidget {
     );
   }
 
-  Widget TiketListView() {
+  Widget TiketListView(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       color: Colors.white,
@@ -155,21 +156,22 @@ class Ulasan extends StatelessWidget {
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          // Positioned(child: ticketDescription()),
                           const SizedBox(width: 40),
-                          Row(
+                          Column(
                             children: [
-                              checkin(),
-                              const SizedBox(width: 10),
-                              hari(),
-                              checkout(),
-                              const SizedBox(width: 10),
+                              ticketDescription(),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  checkin(),
+                                  const SizedBox(width: 10),
+                                  hari(),
+                                  checkout(),
+                                  const SizedBox(width: 10),
+                                ],
+                              ),
                             ],
                           ),
-                          // Positioned(
-                          //   right: 1,
-                          //   child: checkout(),
-                          // )
                         ],
                       ),
                     ),
@@ -178,8 +180,17 @@ class Ulasan extends StatelessWidget {
               );
             },
           ),
+          SizedBox(
+            height: 14,
+          ),
           form_ulasan(),
-          form_gambar(),
+          SizedBox(
+            height: 14,
+          ),
+          form_gambar(context),
+          SizedBox(
+            height: 20,
+          ),
           MainBtn(
             btnText: "Kirim",
             onPressed: () {},
@@ -196,14 +207,11 @@ class Ulasan extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ticketDescription(),
-          Text("Check-in"),
+          Text("Check-in", style: TextStyle(fontSize: 12)),
           Text(
             "Rabu, 9 Maret 2022",
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
           ),
-          SizedBox(height: 20),
           Text("14.00"),
         ],
       ),
@@ -215,16 +223,17 @@ class Ulasan extends StatelessWidget {
       flex: 6,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          SizedBox(height: 110),
-          Text("Check-out"),
+          Text(
+            "Check-out",
+            style: TextStyle(fontSize: 12),
+          ),
           Text(
             "Kamis, 10 Maret 2022",
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+            textAlign: TextAlign.end,
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
           ),
-          SizedBox(height: 20),
           Text("12.00"),
         ],
       ),
@@ -256,47 +265,53 @@ Widget form_ulasan() {
   );
 }
 
-Widget form_gambar() {
+Widget form_gambar(BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       SizedBox(height: 15),
-      Icon(
-        Icons.camera_alt_outlined,
-        size: 25,
-        color: Colors.blue.shade400,
-      ),
-      SizedBox(width: 10),
       Expanded(
-        child: TextFormField(
-          decoration: InputDecoration(
-              border: UnderlineInputBorder(), labelText: "Lampiran Gambar"),
+          child: TextButton(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.camera_alt_rounded,
+              color: Colors.black,
+            ),
+            Text(
+              "Lampirkan Gambar",
+              style: TextStyle(color: Colors.black),
+            ),
+          ],
         ),
-      ),
-      SizedBox(width: 4),
-      ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            shape: const CircleBorder(), padding: const EdgeInsets.all(15)),
-        child: const Icon(Icons.attach_file),
-        onPressed: () {},
-      ),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: ((context) => Upload())));
+        },
+        style: TextButton.styleFrom(
+          backgroundColor: Colors.grey.withOpacity(0.2),
+          primary: Colors.grey.withOpacity(0.2),
+          elevation: 0,
+          fixedSize: Size(double.infinity, 140),
+        ),
+      )),
     ],
   );
 }
 
 Widget hari() {
   return Expanded(
-    flex: 6,
+    flex: 3,
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(height: 110),
-        Icon(Icons.dnd_forwardslash),
+        Icon(Icons.sunny),
         Text(
           "1 Malam",
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 10),
         ),
       ],
     ),

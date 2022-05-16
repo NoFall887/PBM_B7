@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:tourly/ulasan.dart';
 import 'package:tourly/widgets/colors.dart';
 import 'package:tourly/widgets/facility.dart';
 import 'package:tourly/widgets/main_btn.dart';
@@ -133,32 +134,6 @@ class Transaction_Suc extends StatelessWidget {
     );
   }
 
-  Widget facility() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Fasilitas",
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-        ),
-        SizedBox(height: 12),
-        SizedBox(
-          height: 100,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: hotelData["facility"].length,
-            itemBuilder: (BuildContext context, int index) {
-              return hotelFacilityItem(
-                facilityName: hotelData["facility"][index],
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget ticketDescription() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,15 +187,19 @@ class Transaction_Suc extends StatelessWidget {
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          // Positioned(child: ticketDescription()),
                           const SizedBox(width: 40),
-                          Row(
+                          Column(
                             children: [
-                              checkin(),
-                              const SizedBox(width: 10),
-                              hari(),
-                              checkout(),
-                              const SizedBox(width: 10),
+                              ticketDescription(),
+                              Row(
+                                children: [
+                                  checkin(),
+                                  const SizedBox(width: 10),
+                                  hari(),
+                                  checkout(),
+                                  const SizedBox(width: 10),
+                                ],
+                              ),
                               ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor:
@@ -235,7 +214,10 @@ class Transaction_Suc extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                onPressed: () => ulasan(context),
+                                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: ((context) => Ulasan()))),
                                 child: Text("Ulasan"),
                               )
                             ],
@@ -264,14 +246,14 @@ class Transaction_Suc extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ticketDescription(),
-          Text("Check-in"),
+          Text(
+            "Check-in",
+            style: TextStyle(fontSize: 12),
+          ),
           Text(
             "Rabu, 9 Maret 2022",
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
           ),
-          SizedBox(height: 20),
           Text("14.00"),
         ],
       ),
@@ -283,38 +265,36 @@ class Transaction_Suc extends StatelessWidget {
       flex: 6,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          SizedBox(height: 110),
-          Text("Check-out"),
+          Text(
+            "Check-out",
+            style: TextStyle(fontSize: 12),
+          ),
           Text(
             "Kamis, 10 Maret 2022",
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+            textAlign: TextAlign.end,
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
           ),
-          SizedBox(height: 20),
           Text("12.00"),
         ],
       ),
     );
   }
-
-  ulasan(BuildContext context) {}
 }
 
 Widget hari() {
   return Expanded(
-    flex: 6,
+    flex: 2,
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(height: 110),
-        Icon(Icons.dnd_forwardslash),
+        Icon(Icons.wb_sunny),
         Text(
           "1 Malam",
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+          textAlign: TextAlign.center,
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 10),
         ),
       ],
     ),

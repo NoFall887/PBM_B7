@@ -20,11 +20,20 @@ class ProfilePage extends StatelessWidget {
           children: [
             ProfileBox(),
             SizedBox(height: 50),
-            WhiteLongButton(displayText: "Refund saya"),
+            WhiteLongButton(
+              displayText: "Refund saya",
+              onPressed: () {},
+            ),
             SizedBox(height: 10),
-            WhiteLongButton(displayText: "Pusat Bantuan"),
+            WhiteLongButton(
+              displayText: "Pusat Bantuan",
+              onPressed: () {},
+            ),
             SizedBox(height: 10),
-            WhiteLongButton(displayText: "Pengaturan"),
+            WhiteLongButton(
+              displayText: "Pengaturan",
+              onPressed: () {},
+            ),
           ],
         ),
       ),
