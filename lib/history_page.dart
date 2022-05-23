@@ -10,8 +10,6 @@ class HistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        leading: const Icon(Icons.arrow_back),
         title: Text("Riwayat Pemesanan"),
       ),
       body: Container(
