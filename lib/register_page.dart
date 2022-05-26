@@ -1,5 +1,7 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tourly/bottom_navigation_bar.dart';
 import 'package:tourly/login_page.dart';
 
 import 'widgets/colors.dart';
@@ -13,11 +15,33 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _passConfirmController = TextEditingController();
 
-  String email = "";
-  String password = "";
+  Future signUp() async {
+    final isValid = _formKey.currentState!.validate();
+    if (isValid) {
+      _formKey.currentState?.save();
+
+      showDialog(
+        context: context,
+        builder: (context) => Center(
+          child: CircularProgressIndicator(),
+        ),
+        barrierDismissible: false,
+      );
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailController.text, password: _passController.text);
+      } catch (e) {
+        print(e);
+      }
+
+      Navigator.popUntil(context, ((route) => route.isFirst));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,6 +103,7 @@ class _RegisterFormState extends State<RegisterForm> {
         labelText: "Username",
         border: UnderlineInputBorder(),
       ),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (input) {
         if (input!.isEmpty) {
           return "Username tidak boleh kosong";
@@ -94,18 +119,16 @@ class _RegisterFormState extends State<RegisterForm> {
         labelText: "Email",
         border: UnderlineInputBorder(),
       ),
+      controller: _emailController,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      keyboardType: TextInputType.emailAddress,
       validator: (input) {
         if (input!.isEmpty) {
           return "Email tidak boleh kosong";
-        } else if (!EmailValidator.validate(input, true)) {
+        } else if (!EmailValidator.validate(input)) {
           return "Email tidak valid";
         }
         return null;
-      },
-      onSaved: (value) {
-        setState(() {
-          email = value!;
-        });
       },
     );
   }
@@ -117,16 +140,15 @@ class _RegisterFormState extends State<RegisterForm> {
         labelText: "Password",
         border: UnderlineInputBorder(),
       ),
+      obscureText: true,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (input) {
         if (input!.isEmpty) {
           return "password tidak boleh kosong";
+        } else if (input.length < 6) {
+          return "minimal 6 karakter";
         }
         return null;
-      },
-      onSaved: (value) {
-        setState(() {
-          password = value!;
-        });
       },
     );
   }
@@ -139,18 +161,12 @@ class _RegisterFormState extends State<RegisterForm> {
         labelText: "Konfirmasi password",
         border: UnderlineInputBorder(),
       ),
+      obscureText: true,
       validator: (input) {
-        if (input!.isEmpty) {
-          return "password tidak cocok";
-        } else if (input != _passController.text) {
+        if (input!.isEmpty || input != _passController.text) {
           return "password tidak cocok";
         }
         return null;
-      },
-      onSaved: (value) {
-        setState(() {
-          password = value!;
-        });
       },
     );
   }
@@ -170,12 +186,7 @@ class _RegisterFormState extends State<RegisterForm> {
           ),
         ),
       ),
-      onPressed: () {
-        final isValid = _formKey.currentState!.validate();
-        if (isValid) {
-          _formKey.currentState?.save();
-        }
-      },
+      onPressed: signUp,
       child: Text("Daftar"),
     );
   }

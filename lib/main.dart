@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tourly/history_page.dart';
@@ -13,13 +14,16 @@ import 'package:tourly/wishlist.dart';
 import 'package:tourly/bottom_navigation_bar.dart';
 // import 'package:tourly/camera_page.dart';
 import 'package:tourly/upload_file.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
-  runApp(const MyApp());
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -28,7 +32,22 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
       title: "Tourly",
-      home: Navbar(),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.blue,
+              ),
+            );
+          } else if (snapshot.hasData) {
+            return Navbar();
+          } else {
+            return LoginForm();
+          }
+        },
+      ),
     );
   }
 }

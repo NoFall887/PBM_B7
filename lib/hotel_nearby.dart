@@ -16,9 +16,9 @@ class HotelNearby extends StatefulWidget {
 }
 
 class _HotelNearbyState extends State<HotelNearby> {
-  LatLng _initialCameraPosition = LatLng(0, 0);
+  final LatLng _initialCameraPosition = const LatLng(0, 0);
   late GoogleMapController _mapController;
-  Location _location = Location();
+  final Location _location = Location();
   final Set<Marker> _markers = new Set(); //markers for google map
   List _sortedHotel = [];
 
@@ -28,7 +28,7 @@ class _HotelNearbyState extends State<HotelNearby> {
     _location.getLocation().then((l) {
       _sortedHotel =
           MapsServices().getClosest(HotelList, l.latitude!, l.longitude!);
-      print(_sortedHotel[0]);
+
       _mapController.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
@@ -61,13 +61,13 @@ class _HotelNearbyState extends State<HotelNearby> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Hotel disekitar'),
+        title: const Text('Hotel disekitar'),
       ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 250),
+            constraints: const BoxConstraints(maxHeight: 250),
             child: GoogleMap(
               zoomGesturesEnabled: true,
               initialCameraPosition:
@@ -87,8 +87,8 @@ class _HotelNearbyState extends State<HotelNearby> {
   Widget hotelList() {
     return Container(
       child: ListView.separated(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-        separatorBuilder: (context, index) => SizedBox(height: 10),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        separatorBuilder: (context, index) => const SizedBox(height: 10),
         itemCount: _sortedHotel.length,
         itemBuilder: (BuildContext context, int index) {
           var data = _sortedHotel[index];
@@ -99,7 +99,7 @@ class _HotelNearbyState extends State<HotelNearby> {
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.25),
-                  offset: Offset(0, 4),
+                  offset: const Offset(0, 4),
                   blurRadius: 6,
                   spreadRadius: 3,
                 ),
@@ -116,7 +116,7 @@ class _HotelNearbyState extends State<HotelNearby> {
                   );
                 },
                 child: Ink(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8),
@@ -124,7 +124,7 @@ class _HotelNearbyState extends State<HotelNearby> {
                   child: Row(
                     children: [
                       thumbnailImage(data),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       briefDetail(data, currencyFormat),
                     ],
                   ),
@@ -162,15 +162,15 @@ class _HotelNearbyState extends State<HotelNearby> {
         children: [
           Text(
             data["nama"],
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.location_on_outlined,
                 size: 18,
                 color: Colors.grey,
@@ -179,7 +179,7 @@ class _HotelNearbyState extends State<HotelNearby> {
                 data["distance"] >= 1000
                     ? (data["distance"] / 1000).toStringAsFixed(1) + ' Km'
                     : data["distance"].toStringAsFixed(1) + ' M',
-                style: TextStyle(color: Colors.grey),
+                style: const TextStyle(color: Colors.grey),
               )
             ],
           ),
@@ -187,13 +187,13 @@ class _HotelNearbyState extends State<HotelNearby> {
             currencyFormat.format(
               data["harga"],
             ),
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
-          SizedBox(
+          const SizedBox(
             height: 6,
           ),
           RatingBarIndicator(
-            itemBuilder: (context, index) => Icon(
+            itemBuilder: (context, index) => const Icon(
               Icons.star,
               color: Colors.amber,
             ),

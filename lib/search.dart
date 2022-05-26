@@ -35,7 +35,7 @@ class _SearchPageState extends State<SearchPage> {
       context: context,
       builder: (context) {
         return Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -44,12 +44,12 @@ class _SearchPageState extends State<SearchPage> {
                   Expanded(
                     flex: 2,
                     child: TextField(
-                      decoration: InputDecoration(labelText: "Min"),
+                      decoration: const InputDecoration(labelText: "Min"),
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     ),
                   ),
-                  Expanded(
+                  const Expanded(
                     flex: 1,
                     child: Text(
                       " - ",
@@ -59,15 +59,15 @@ class _SearchPageState extends State<SearchPage> {
                   Expanded(
                     flex: 2,
                     child: TextField(
-                      decoration: InputDecoration(labelText: "Max"),
+                      decoration: const InputDecoration(labelText: "Max"),
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 30),
-              TextButton(onPressed: () {}, child: Text("OK"))
+              const SizedBox(height: 30),
+              TextButton(onPressed: () {}, child: const Text("OK"))
             ],
           ),
         );
@@ -79,16 +79,16 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cari hotel"),
+        title: const Text("Cari hotel"),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 13),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 13),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: Colors.black26,
                 blurRadius: 10,
@@ -99,13 +99,13 @@ class _SearchPageState extends State<SearchPage> {
             child: Column(
               children: [
                 penginapanTerdekat(),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 tanggal(context),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 kamar(),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 filterBtn(context),
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
                 MainBtn(
                   btnText: "Cari",
                   onPressed: () {
@@ -129,14 +129,14 @@ class _SearchPageState extends State<SearchPage> {
           size: 25,
           color: Colors.blue.shade400,
         ),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         Expanded(
           child: TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
                 border: UnderlineInputBorder(), labelText: "Penginapan"),
           ),
         ),
-        SizedBox(width: 4),
+        const SizedBox(width: 4),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
               shape: const CircleBorder(), padding: const EdgeInsets.all(10)),
@@ -168,7 +168,7 @@ class _SearchPageState extends State<SearchPage> {
             style: TextButton.styleFrom(alignment: Alignment.bottomLeft),
             child: Text(
               date.toLocal().toString().split(' ')[0],
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black54,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
@@ -179,8 +179,8 @@ class _SearchPageState extends State<SearchPage> {
         Expanded(
           flex: 3,
           child: TextFormField(
-            decoration: InputDecoration(
-                border: UnderlineInputBorder(), labelText: "1 Malam"),
+            decoration: const InputDecoration(
+                border: const UnderlineInputBorder(), labelText: "1 Malam"),
           ),
         ),
       ],
@@ -195,10 +195,10 @@ class _SearchPageState extends State<SearchPage> {
           size: 25,
           color: Colors.blue.shade400,
         ),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         Expanded(
           child: TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
                 border: UnderlineInputBorder(), labelText: "Pilihan kamar"),
           ),
         ),
@@ -220,7 +220,7 @@ class _SearchPageState extends State<SearchPage> {
               _filter(context);
             },
             style: TextButton.styleFrom(alignment: Alignment.bottomLeft),
-            child: Text(
+            child: const Text(
               "Filter",
               style: TextStyle(
                 color: Colors.black54,

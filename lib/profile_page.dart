@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tourly/history_page.dart';
 
@@ -34,6 +35,11 @@ class ProfilePage extends StatelessWidget {
               displayText: "Pengaturan",
               onPressed: () {},
             ),
+            WhiteLongButton(
+                displayText: "Logout",
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                })
           ],
         ),
       ),
