@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:tourly/reservasi.dart';
 import 'package:tourly/widgets/colors.dart';
 import 'package:tourly/widgets/facility.dart';
 
@@ -252,7 +253,15 @@ class _HotelDetailState extends State<HotelDetail> {
               ],
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => Reservasi(
+                            namaHotel: hotelData['name'],
+                          ))),
+                );
+              },
               child: Text(
                 "Pesan hotel",
                 style: TextStyle(

@@ -12,7 +12,6 @@ import 'package:tourly/transaction_succes.dart';
 import 'package:tourly/ulasan.dart';
 import 'package:tourly/wishlist.dart';
 import 'package:tourly/bottom_navigation_bar.dart';
-// import 'package:tourly/camera_page.dart';
 import 'package:tourly/upload_file.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

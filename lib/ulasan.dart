@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -43,21 +44,27 @@ const Map hotelData = {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 };
 
-class Ulasan extends StatelessWidget {
+class Ulasan extends StatefulWidget {
   Ulasan({Key? key}) : super(key: key);
 
-  CarouselController buttonCarouselController = CarouselController();
+  @override
+  State<Ulasan> createState() => _UlasanState();
+}
+
+class _UlasanState extends State<Ulasan> {
+  double _rating = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ulasan"),
+        title: const Text("Ulasan"),
       ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TiketListView(context),
           ],
         ),
@@ -71,37 +78,29 @@ class Ulasan extends StatelessWidget {
       children: [
         Text(
           hotelData["name"],
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
+          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
         ),
-        RatingBarIndicator(
-          itemBuilder: (context, index) => Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-          itemSize: 20,
-          rating: hotelData['rating'],
-          unratedColor: Colors.amber.withOpacity(0.5),
-        ),
-        SizedBox(height: 6),
+        const SizedBox(height: 6),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(Icons.location_on_outlined, size: 16, color: Colors.black54),
+            const Icon(Icons.location_on_outlined,
+                size: 16, color: Colors.black54),
             Text(
               hotelData["location"],
-              style: TextStyle(color: Colors.black54, fontSize: 13),
+              style: const TextStyle(color: Colors.black54, fontSize: 13),
             ),
           ],
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         sectionDivider(),
-        SizedBox(height: 8)
+        const SizedBox(height: 8)
       ],
     );
   }
 
   Widget sectionDivider() {
-    return Divider(
+    return const Divider(
       thickness: 2,
       color: Colors.black12,
     );
@@ -118,77 +117,48 @@ class Ulasan extends StatelessWidget {
 
   Widget TiketListView(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-      color: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 15),
-          ListView.separated(
-            separatorBuilder: (context, index) => SizedBox(height: 10),
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: dummyHotelList.length,
-            itemBuilder: (BuildContext context, int index) {
-              var data = dummyHotelList[index];
-              return Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.25),
-                      offset: Offset(0, 4),
-                      blurRadius: 6,
-                      spreadRadius: 3,
-                    ),
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.25),
+                  offset: const Offset(0, 4),
+                  blurRadius: 6,
+                  spreadRadius: 3,
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                ticketDescription(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    checkin(),
+                    const SizedBox(width: 10),
+                    hari(),
+                    checkout(),
                   ],
                 ),
-                child: Material(
-                  child: InkWell(
-                    onTap: () {
-                      print("object");
-                    },
-                    child: Ink(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          const SizedBox(width: 40),
-                          Column(
-                            children: [
-                              ticketDescription(),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  checkin(),
-                                  const SizedBox(width: 10),
-                                  hari(),
-                                  checkout(),
-                                  const SizedBox(width: 10),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
+              ],
+            ),
           ),
-          SizedBox(
-            height: 14,
+          const SizedBox(
+            height: 24,
           ),
+          ratingInput(),
           form_ulasan(),
-          SizedBox(
+          const SizedBox(
             height: 14,
           ),
-          form_gambar(context),
-          SizedBox(
+          Upload(),
+          const SizedBox(
             height: 20,
           ),
           MainBtn(
@@ -207,12 +177,12 @@ class Ulasan extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Check-in", style: TextStyle(fontSize: 12)),
-          Text(
+          const Text("Check-in", style: const TextStyle(fontSize: 12)),
+          const Text(
             "Rabu, 9 Maret 2022",
             style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
           ),
-          Text("14.00"),
+          const Text("14.00"),
         ],
       ),
     );
@@ -225,78 +195,67 @@ class Ulasan extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Text(
+          const Text(
             "Check-out",
-            style: TextStyle(fontSize: 12),
+            style: const TextStyle(fontSize: 12),
           ),
-          Text(
+          const Text(
             "Kamis, 10 Maret 2022",
             textAlign: TextAlign.end,
             style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
           ),
-          Text("12.00"),
+          const Text("12.00"),
         ],
       ),
     );
   }
 
-  ulasan(BuildContext context) {}
+  Widget ratingInput() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Text(
+          "Rating",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 6),
+        RatingBar.builder(
+          initialRating: 4,
+          minRating: 1,
+          allowHalfRating: true,
+          itemBuilder: ((context, index) => const Icon(
+                Icons.star,
+                color: Colors.amber,
+              )),
+          onRatingUpdate: (rating) {
+            setState(() {
+              _rating = rating;
+            });
+          },
+        ),
+      ],
+    );
+  }
 }
 
 Widget form_ulasan() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      SizedBox(height: 15),
+      const SizedBox(height: 15),
       Icon(
         Icons.text_fields,
         size: 25,
         color: Colors.blue.shade400,
       ),
-      SizedBox(width: 10),
+      const SizedBox(width: 10),
       Expanded(
         child: TextFormField(
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
               border: UnderlineInputBorder(), labelText: "Ulasan"),
         ),
       ),
-      SizedBox(width: 4),
-    ],
-  );
-}
-
-Widget form_gambar(BuildContext context) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      SizedBox(height: 15),
-      Expanded(
-          child: TextButton(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.camera_alt_rounded,
-              color: Colors.black,
-            ),
-            Text(
-              "Lampirkan Gambar",
-              style: TextStyle(color: Colors.black),
-            ),
-          ],
-        ),
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: ((context) => Upload())));
-        },
-        style: TextButton.styleFrom(
-          backgroundColor: Colors.grey.withOpacity(0.2),
-          primary: Colors.grey.withOpacity(0.2),
-          elevation: 0,
-          fixedSize: Size(double.infinity, 140),
-        ),
-      )),
+      const SizedBox(width: 4),
     ],
   );
 }
@@ -308,8 +267,8 @@ Widget hari() {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Icon(Icons.sunny),
-        Text(
+        const Icon(Icons.sunny),
+        const Text(
           "1 Malam",
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 10),
         ),

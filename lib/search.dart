@@ -170,7 +170,7 @@ class _SearchPageState extends State<SearchPage> {
               date.toLocal().toString().split(' ')[0],
               style: const TextStyle(
                 color: Colors.black54,
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.w400,
               ),
             ),

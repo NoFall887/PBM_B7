@@ -71,45 +71,48 @@ class _UploadState extends State<Upload> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Upload Image'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                myAlert();
-              },
-              child: Text('Upload Photo'),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            //if image not null show the image
-            //if image null show text
-            image != null
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.file(
-                        //to show image, you type like this.
-                        File(image!.path),
-                        fit: BoxFit.cover,
-                        width: MediaQuery.of(context).size.width,
-                        height: 300,
-                      ),
-                    ),
-                  )
-                : Text(
-                    "No Image",
-                    style: TextStyle(fontSize: 20),
-                  )
-          ],
+    return image != null ? fotoBtn() : uploadBtn(context);
+  }
+
+  Widget fotoBtn() {
+    return InkWell(
+      onTap: myAlert,
+      splashColor: Colors.white10,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
+        child: Image.file(
+          //to show image, you type like this.
+          File(image!.path),
+          fit: BoxFit.cover,
+          width: MediaQuery.of(context).size.width,
+          height: 250,
         ),
+      ),
+    );
+  }
+
+  Widget uploadBtn(BuildContext context) {
+    return TextButton(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.camera_alt_rounded,
+            color: Colors.black,
+          ),
+          Text(
+            "Lampirkan Gambar",
+            style: TextStyle(color: Colors.black),
+          ),
+        ],
+      ),
+      onPressed: myAlert,
+      style: TextButton.styleFrom(
+        backgroundColor: Colors.grey.withOpacity(0.2),
+        primary: Colors.grey.withOpacity(0.2),
+        elevation: 0,
+        fixedSize: Size(MediaQuery.of(context).size.width, 140),
       ),
     );
   }

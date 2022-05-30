@@ -184,48 +184,37 @@ class Transaction_Suc extends StatelessWidget {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Stack(
-                        alignment: Alignment.center,
+                      child: Column(
                         children: [
-                          const SizedBox(width: 40),
-                          Column(
+                          ticketDescription(),
+                          Row(
                             children: [
-                              ticketDescription(),
-                              Row(
-                                children: [
-                                  checkin(),
-                                  const SizedBox(width: 10),
-                                  hari(),
-                                  checkout(),
-                                  const SizedBox(width: 10),
-                                ],
-                              ),
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all(MyColor.oren),
-                                  foregroundColor:
-                                      MaterialStateProperty.all(Colors.black),
-                                  textStyle: MaterialStateProperty.all(
-                                    TextStyle(
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: ((context) => Ulasan()))),
-                                child: Text("Ulasan"),
-                              )
+                              checkin(),
+                              const SizedBox(width: 10),
+                              hari(),
+                              checkout(),
                             ],
                           ),
-                          // Positioned(
-                          //   right: 1,
-                          //   child: checkout(),
-                          // )
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(MyColor.oren),
+                              foregroundColor:
+                                  MaterialStateProperty.all(Colors.black),
+                              textStyle: MaterialStateProperty.all(
+                                TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => Ulasan()))),
+                            child: Text("Ulasan"),
+                          )
                         ],
                       ),
                     ),
