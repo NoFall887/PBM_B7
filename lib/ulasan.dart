@@ -8,7 +8,9 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tourly/upload_file.dart';
 import 'package:tourly/widgets/colors.dart';
 import 'package:tourly/widgets/facility.dart';
+import 'package:tourly/widgets/hotel_checkin_checkout.dart';
 import 'package:tourly/widgets/main_btn.dart';
+import 'package:tourly/widgets/shadowed_container.dart';
 
 final dummyItem = [
   "https://cdn.pixabay.com/photo/2016/04/25/22/41/cat-1353325_960_720.jpg",
@@ -61,101 +63,40 @@ class _UlasanState extends State<Ulasan> {
         title: const Text("Ulasan"),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 20),
-            TiketListView(context),
-          ],
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              HotelCheckinCheckout(
+                hotelName: hotelData['name'],
+                dateCheckin: DateTime.now(),
+                dateCheckout: DateTime.now().add(
+                  Duration(days: 1),
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              ratingFormSection()
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget hotelName() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          hotelData["name"],
-          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
-        ),
-        const SizedBox(height: 6),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Icon(Icons.location_on_outlined,
-                size: 16, color: Colors.black54),
-            Text(
-              hotelData["location"],
-              style: const TextStyle(color: Colors.black54, fontSize: 13),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        sectionDivider(),
-        const SizedBox(height: 8)
-      ],
-    );
-  }
-
-  Widget sectionDivider() {
-    return const Divider(
-      thickness: 2,
-      color: Colors.black12,
-    );
-  }
-
-  Widget ticketDescription() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        hotelName(),
-      ],
-    );
-  }
-
-  Widget TiketListView(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+  Widget ratingFormSection() {
+    return ShadowedContainer(
       child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.25),
-                  offset: const Offset(0, 4),
-                  blurRadius: 6,
-                  spreadRadius: 3,
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                ticketDescription(),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    checkin(),
-                    const SizedBox(width: 10),
-                    hari(),
-                    checkout(),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
           ratingInput(),
+          SizedBox(
+            height: 20,
+          ),
           form_ulasan(),
-          const SizedBox(
-            height: 14,
+          SizedBox(
+            height: 20,
           ),
           Upload(),
           const SizedBox(
@@ -170,45 +111,59 @@ class _UlasanState extends State<Ulasan> {
     );
   }
 
-  Widget checkin() {
-    return Expanded(
-      flex: 6,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text("Check-in", style: const TextStyle(fontSize: 12)),
-          const Text(
-            "Rabu, 9 Maret 2022",
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
-          ),
-          const Text("14.00"),
-        ],
-      ),
-    );
-  }
-
-  Widget checkout() {
-    return Expanded(
-      flex: 6,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          const Text(
-            "Check-out",
-            style: const TextStyle(fontSize: 12),
-          ),
-          const Text(
-            "Kamis, 10 Maret 2022",
-            textAlign: TextAlign.end,
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
-          ),
-          const Text("12.00"),
-        ],
-      ),
-    );
-  }
+  // Widget TiketListView(BuildContext context) {
+  //   return Container(
+  //     padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+  //     child: Column(
+  //       children: [
+  //         Container(
+  //           padding: const EdgeInsets.all(10),
+  //           decoration: BoxDecoration(
+  //             color: Colors.white,
+  //             borderRadius: BorderRadius.circular(8),
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: Colors.grey.withOpacity(0.25),
+  //                 offset: const Offset(0, 4),
+  //                 blurRadius: 6,
+  //                 spreadRadius: 3,
+  //               ),
+  //             ],
+  //           ),
+  //           child: Column(
+  //             children: [
+  //               ticketDescription(),
+  //               Row(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   checkin(),
+  //                   hari(),
+  //                   checkout(),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         const SizedBox(
+  //           height: 24,
+  //         ),
+  //         ratingInput(),
+  //         form_ulasan(),
+  //         const SizedBox(
+  //           height: 14,
+  //         ),
+  //         Upload(),
+  //         const SizedBox(
+  //           height: 20,
+  //         ),
+  //         MainBtn(
+  //           btnText: "Kirim",
+  //           onPressed: () {},
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget ratingInput() {
     return Column(
@@ -251,11 +206,14 @@ Widget form_ulasan() {
       const SizedBox(width: 10),
       Expanded(
         child: TextFormField(
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
           decoration: const InputDecoration(
-              border: UnderlineInputBorder(), labelText: "Ulasan"),
+            border: OutlineInputBorder(),
+            labelText: "Ulasan",
+          ),
         ),
       ),
-      const SizedBox(width: 4),
     ],
   );
 }

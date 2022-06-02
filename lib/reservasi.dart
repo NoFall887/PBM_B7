@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tourly/order_review.dart';
 import 'package:tourly/widgets/main_btn.dart';
 
 class Reservasi extends StatefulWidget {
@@ -58,9 +59,12 @@ class _ReservasiState extends State<Reservasi> {
                 const SizedBox(height: 20),
                 const SizedBox(height: 50),
                 MainBtn(
-                  btnText: "Cari",
+                  btnText: "Lanjutkan pesanan",
                   onPressed: () {
-                    // Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => OrderReview())));
                   },
                 )
               ],

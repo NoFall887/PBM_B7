@@ -7,6 +7,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tourly/ulasan.dart';
 import 'package:tourly/widgets/colors.dart';
 import 'package:tourly/widgets/facility.dart';
+import 'package:tourly/widgets/hotel_checkin_checkout.dart';
 import 'package:tourly/widgets/main_btn.dart';
 
 final dummyItem = [
@@ -162,64 +163,13 @@ class Transaction_Suc extends StatelessWidget {
             itemCount: dummyHotelList.length,
             itemBuilder: (BuildContext context, int index) {
               var data = dummyHotelList[index];
-              return Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.25),
-                      offset: Offset(0, 4),
-                      blurRadius: 6,
-                      spreadRadius: 3,
-                    ),
-                  ],
-                ),
-                child: Material(
-                  child: InkWell(
-                    onTap: () {
-                      print("object");
-                    },
-                    child: Ink(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Column(
-                        children: [
-                          ticketDescription(),
-                          Row(
-                            children: [
-                              checkin(),
-                              const SizedBox(width: 10),
-                              hari(),
-                              checkout(),
-                            ],
-                          ),
-                          ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(MyColor.oren),
-                              foregroundColor:
-                                  MaterialStateProperty.all(Colors.black),
-                              textStyle: MaterialStateProperty.all(
-                                TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                            onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => Ulasan()))),
-                            child: Text("Ulasan"),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+              return HotelCheckinCheckout(
+                hotelName: data['nama'],
+                location: data['location'],
+                rating: data['rating'].toDouble(),
+                dateCheckin: DateTime.now(),
+                dateCheckout: DateTime.now().add(Duration(days: 1)),
+                actionBtn: ulasanBtn(context),
               );
             },
           ),
@@ -228,64 +178,22 @@ class Transaction_Suc extends StatelessWidget {
     );
   }
 
-  Widget checkin() {
-    return Expanded(
-      flex: 6,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Check-in",
-            style: TextStyle(fontSize: 12),
+  Widget ulasanBtn(BuildContext context) {
+    return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(MyColor.oren),
+        foregroundColor: MaterialStateProperty.all(Colors.black),
+        textStyle: MaterialStateProperty.all(
+          TextStyle(
+            fontFamily: "Poppins",
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
-          Text(
-            "Rabu, 9 Maret 2022",
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
-          ),
-          Text("14.00"),
-        ],
-      ),
-    );
-  }
-
-  Widget checkout() {
-    return Expanded(
-      flex: 6,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text(
-            "Check-out",
-            style: TextStyle(fontSize: 12),
-          ),
-          Text(
-            "Kamis, 10 Maret 2022",
-            textAlign: TextAlign.end,
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
-          ),
-          Text("12.00"),
-        ],
-      ),
-    );
-  }
-}
-
-Widget hari() {
-  return Expanded(
-    flex: 2,
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Icon(Icons.wb_sunny),
-        Text(
-          "1 Malam",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 10),
         ),
-      ],
-    ),
-  );
+      ),
+      onPressed: () => Navigator.push(
+          context, MaterialPageRoute(builder: ((context) => Ulasan()))),
+      child: Text("Ulasan"),
+    );
+  }
 }
