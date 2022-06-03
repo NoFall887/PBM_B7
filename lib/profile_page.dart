@@ -35,11 +35,11 @@ class ProfilePage extends StatelessWidget {
               displayText: "Pengaturan",
               onPressed: () {},
             ),
-            WhiteLongButton(
-                displayText: "Logout",
-                onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                })
+            // WhiteLongButton(
+            //     displayText: "Logout",
+            //     onPressed: () {
+            //       FirebaseAuth.instance.signOut();
+            //     })
           ],
         ),
       ),

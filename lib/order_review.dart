@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:readmore/readmore.dart';
 import 'package:tourly/widgets/hotel_checkin_checkout.dart';
+import 'package:tourly/widgets/main_btn.dart';
+import 'package:tourly/widgets/room_facility.dart';
 import 'package:tourly/widgets/shadowed_container.dart';
 
 Map<String, dynamic> hotelData = {
@@ -60,6 +63,17 @@ class OrderReview extends StatelessWidget {
                   height: 8,
                 ),
                 room(),
+                SizedBox(
+                  height: 8,
+                ),
+                description(),
+                SizedBox(
+                  height: 32,
+                ),
+                MainBtn(btnText: "Lanjut ke pembayaran", onPressed: () {}),
+                SizedBox(
+                  height: 16,
+                )
               ],
             ),
           ),
@@ -108,8 +122,10 @@ class OrderReview extends StatelessWidget {
 
   Widget photoAndFacility() {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
+          flex: 3,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(3),
             child: AspectRatio(
@@ -122,16 +138,40 @@ class OrderReview extends StatelessWidget {
             ),
           ),
         ),
+        SizedBox(
+          width: 6,
+        ),
         Expanded(
-          child: facility(),
+          flex: 4,
+          child: RoomFacility(facilities: ['wifi']),
         ),
       ],
     );
   }
 
-  Widget facility() {
-    return Column(
-      children: [],
-    );
+  Widget description() {
+    return ShadowedContainer(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Kebijakan hotel & kamar",
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        ReadMoreText(
+          hotelData["description"],
+          trimLines: 9,
+          colorClickableText: Colors.blue.shade300,
+          trimMode: TrimMode.Line,
+          trimCollapsedText: 'Show more',
+          trimExpandedText: 'Show less',
+          style: TextStyle(color: Colors.black),
+          textAlign: TextAlign.justify,
+        ),
+      ],
+    ));
   }
 }
