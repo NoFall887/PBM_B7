@@ -1,9 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tourly/database/user.dart';
 import 'package:tourly/history_page.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  final String userEmail;
+
+  const ProfilePage({Key? key, required this.userEmail}) : super(key: key);
+
+  // Stream
+  Future<CreateUser?> readUser() async {
+    final CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection('users');
+
+    final query = collectionReference.where("email", isEqualTo: userEmail);
+    final snapshot = await query.get();
+
+    return CreateUser.fromJson(snapshot.docs.single);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,38 +30,53 @@ class ProfilePage extends StatelessWidget {
           icon: Icon(Icons.arrow_back_rounded),
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-        child: Column(
-          children: [
-            ProfileBox(),
-            SizedBox(height: 50),
-            WhiteLongButton(
-              displayText: "Refund saya",
-              onPressed: () {},
-            ),
-            SizedBox(height: 10),
-            WhiteLongButton(
-              displayText: "Pusat Bantuan",
-              onPressed: () {},
-            ),
-            SizedBox(height: 10),
-            WhiteLongButton(
-              displayText: "Pengaturan",
-              onPressed: () {},
-            ),
-            // WhiteLongButton(
-            //     displayText: "Logout",
-            //     onPressed: () {
-            //       FirebaseAuth.instance.signOut();
-            //     })
-          ],
-        ),
+      body: FutureBuilder<CreateUser?>(
+          future: readUser(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final String username = snapshot.data!.nama;
+              return buildPage(username);
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          }),
+    );
+  }
+
+  Widget buildPage(String username) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+      child: Column(
+        children: [
+          ProfileBox(username),
+          SizedBox(height: 50),
+          WhiteLongButton(
+            displayText: "Refund saya",
+            onPressed: () {},
+          ),
+          SizedBox(height: 10),
+          WhiteLongButton(
+            displayText: "Pusat Bantuan",
+            onPressed: () {},
+          ),
+          SizedBox(height: 10),
+          WhiteLongButton(
+            displayText: "Pengaturan",
+            onPressed: () {},
+          ),
+          WhiteLongButton(
+              displayText: "Logout",
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+              })
+        ],
       ),
     );
   }
 
-  Widget ProfileBox() {
+  Widget ProfileBox(String username) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       decoration: BoxDecoration(
@@ -72,7 +102,7 @@ class ProfilePage extends StatelessWidget {
           ),
           SizedBox(width: 23),
           Text(
-            "Nama user",
+            username,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           )
         ],

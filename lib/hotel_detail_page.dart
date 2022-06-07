@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:tourly/database/hotel.dart';
 import 'package:tourly/reservasi.dart';
 import 'package:tourly/widgets/colors.dart';
 import 'package:tourly/widgets/facility.dart';
@@ -15,17 +16,18 @@ const hotelPhotoList = <String>[
   "https://cdn.pixabay.com/photo/2019/08/19/13/58/bed-4416515__340.jpg",
 ];
 
-const Map hotelData = {
-  "name": "Regantris Hotel Surabaya",
-  "rating": 4.5,
-  "location": "Tegalsari, Surabaya, Jawa Timur",
-  "facility": <String>["Kolam", "Parkir", "Wifi", "Gym", "Restoran"],
-  "description":
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-};
+// const Map hotelData = {
+//   "name": "Regantris Hotel Surabaya",
+//   "rating": 4.5,
+//   "location": "Tegalsari, Surabaya, Jawa Timur",
+//   "facility": <String>["Kolam", "Parkir", "Wifi", "Gym", "Restoran"],
+//   "description":
+//       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+// };
 
 class HotelDetail extends StatefulWidget {
-  HotelDetail({Key? key}) : super(key: key);
+  final Hotel hotel;
+  HotelDetail({Key? key, required this.hotel}) : super(key: key);
 
   @override
   State<HotelDetail> createState() => _HotelDetailState();
@@ -132,7 +134,7 @@ class _HotelDetailState extends State<HotelDetail> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          hotelData["name"],
+          widget.hotel.nama,
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
         ),
         RatingBarIndicator(
@@ -141,7 +143,7 @@ class _HotelDetailState extends State<HotelDetail> {
             color: Colors.amber,
           ),
           itemSize: 20,
-          rating: hotelData['rating'],
+          rating: widget.hotel.rating,
           unratedColor: Colors.amber.withOpacity(0.5),
         ),
         SizedBox(height: 6),
@@ -150,7 +152,7 @@ class _HotelDetailState extends State<HotelDetail> {
           children: [
             Icon(Icons.location_on_outlined, size: 16, color: Colors.black54),
             Text(
-              hotelData["location"],
+              widget.hotel.alamat!,
               style: TextStyle(color: Colors.black54, fontSize: 13),
             ),
           ],
@@ -172,7 +174,7 @@ class _HotelDetailState extends State<HotelDetail> {
         ),
         SizedBox(height: 8),
         ReadMoreText(
-          hotelData["description"],
+          widget.hotel.deskripsi!,
           trimLines: 4,
           colorClickableText: Colors.blue.shade300,
           trimMode: TrimMode.Line,
@@ -202,10 +204,10 @@ class _HotelDetailState extends State<HotelDetail> {
           height: 100,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: hotelData["facility"].length,
+            itemCount: widget.hotel.fasilitas!.length,
             itemBuilder: (BuildContext context, int index) {
               return hotelFacilityItem(
-                facilityName: hotelData["facility"][index],
+                facilityName: widget.hotel.fasilitas![index],
               );
             },
           ),
@@ -244,7 +246,7 @@ class _HotelDetailState extends State<HotelDetail> {
                   style: TextStyle(color: Colors.grey.shade400, fontSize: 12),
                 ),
                 Text(
-                  currencyFormat.format(4999000),
+                  currencyFormat.format(widget.hotel.hargaAkhir),
                   style: TextStyle(
                       color: Colors.orange.shade400,
                       fontWeight: FontWeight.w700,
@@ -258,7 +260,7 @@ class _HotelDetailState extends State<HotelDetail> {
                   context,
                   MaterialPageRoute(
                       builder: ((context) => Reservasi(
-                            namaHotel: hotelData['name'],
+                            namaHotel: widget.hotel.nama,
                           ))),
                 );
               },

@@ -1,8 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:tourly/database/hotel.dart';
 import 'package:tourly/hotel_detail_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -65,6 +66,26 @@ class HomePage extends StatelessWidget {
     },
   ];
 
+  Future<List<Hotel>> readHotels() async {
+    final CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection('hotel');
+    try {
+      final query = collectionReference.where("diskon", isGreaterThan: 0);
+      return await query.get().then((value) async {
+        return await Future.wait(value.docs.map((doc) async {
+          Hotel data = Hotel.create(doc.data());
+          data.fasilitas = await Future.wait(data.fasilitas!
+              .map((reference) async =>
+                  await reference.get().then((doc) => doc.data()!['nama']))
+              .toList());
+          return data;
+        }).toList());
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   CarouselController buttonCarouselController = CarouselController();
   @override
   Widget build(BuildContext context) {
@@ -79,7 +100,23 @@ class HomePage extends StatelessWidget {
           children: [
             hotelCarouselSlider(),
             SizedBox(height: 20),
-            discountListView(),
+            FutureBuilder(
+              future: readHotels(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) {
+                  print(snapshot.error);
+                  return Text("Something went wrong");
+                }
+                if (snapshot.hasData) {
+                  final List<Hotel> hotels = snapshot.data;
+                  return discountListView(hotels);
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),
@@ -87,7 +124,7 @@ class HomePage extends StatelessWidget {
   }
 
   // Hotel list components
-  Widget discountListView() {
+  Widget discountListView(List<Hotel> hotels) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       color: Colors.white,
@@ -103,9 +140,9 @@ class HomePage extends StatelessWidget {
             separatorBuilder: (context, index) => SizedBox(height: 10),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            itemCount: dummyHotelList.length,
+            itemCount: hotels.length,
             itemBuilder: (BuildContext context, int index) {
-              var data = dummyHotelList[index];
+              var data = hotels[index];
               final currencyFormat =
                   NumberFormat.currency(locale: "id_ID", symbol: "Rp.");
               return Container(
@@ -125,7 +162,9 @@ class HomePage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HotelDetail(),
+                          builder: (context) => HotelDetail(
+                            hotel: data,
+                          ),
                         ),
                       );
                     },
@@ -137,7 +176,7 @@ class HomePage extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          thumbnailImage(data),
+                          thumbnailImage(data.foto![0]),
                           SizedBox(width: 10),
                           briefDetail(data, currencyFormat),
                         ],
@@ -153,7 +192,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget thumbnailImage(Map data) {
+  Widget thumbnailImage(String link) {
     return Flexible(
       flex: 4,
       child: ClipRRect(
@@ -161,7 +200,7 @@ class HomePage extends StatelessWidget {
         child: AspectRatio(
           aspectRatio: 1 / 1,
           child: Image.network(
-            data["link"],
+            link,
             fit: BoxFit.cover,
           ),
         ),
@@ -169,7 +208,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget briefDetail(Map data, NumberFormat currencyFormat) {
+  Widget briefDetail(Hotel hotel, NumberFormat currencyFormat) {
     return Flexible(
       flex: 7,
       child: Column(
@@ -177,21 +216,21 @@ class HomePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            data["nama"],
+            hotel.nama,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
           ),
           SizedBox(height: 20),
           Text(
             currencyFormat.format(
-              data["harga"],
+              hotel.harga,
             ),
             style: TextStyle(
                 color: Colors.red, decoration: TextDecoration.lineThrough),
           ),
           Text(
             currencyFormat.format(
-              data["diskon"],
+              hotel.hargaAkhir,
             ),
           ),
           RatingBarIndicator(
@@ -200,7 +239,7 @@ class HomePage extends StatelessWidget {
               color: Colors.amber,
             ),
             itemSize: 20,
-            rating: data["rating"].toDouble(),
+            rating: hotel.rating,
             unratedColor: Colors.amber.withOpacity(0.5),
           )
         ],

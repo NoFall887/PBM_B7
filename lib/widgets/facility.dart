@@ -5,12 +5,12 @@ class hotelFacilityItem extends StatelessWidget {
   hotelFacilityItem({Key? key, required this.facilityName}) : super(key: key);
 
   Map _facilityIcon = {
-    "Restoran": IconTemplate(icon: Icons.restaurant),
-    "Gym": IconTemplate(icon: Icons.fitness_center_rounded),
-    "Wifi": IconTemplate(icon: Icons.wifi),
-    "Kolam": IconTemplate(icon: Icons.pool_rounded),
-    "Laundry": IconTemplate(icon: Icons.local_laundry_service_rounded),
-    "Parkir": IconTemplate(icon: Icons.local_parking_rounded)
+    "restoran": IconTemplate(icon: Icons.restaurant),
+    "gym": IconTemplate(icon: Icons.fitness_center_rounded),
+    "wifi": IconTemplate(icon: Icons.wifi),
+    "kolam": IconTemplate(icon: Icons.pool_rounded),
+    "laundry": IconTemplate(icon: Icons.local_laundry_service_rounded),
+    "parkir": IconTemplate(icon: Icons.local_parking_rounded)
   };
 
   @override

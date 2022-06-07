@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tourly/bottom_navigation_bar.dart';
+import 'package:tourly/database/user.dart';
 import 'package:tourly/login_page.dart';
 
 import 'widgets/colors.dart';
@@ -16,6 +18,7 @@ class RegisterForm extends StatefulWidget {
 class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _passConfirmController = TextEditingController();
 
@@ -34,6 +37,13 @@ class _RegisterFormState extends State<RegisterForm> {
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: _emailController.text, password: _passController.text);
+        final docUser = FirebaseFirestore.instance.collection("users").doc();
+        final user = new CreateUser(
+            nama: _usernameController.text, email: _emailController.text);
+
+        final userJson = user.toJson();
+
+        await docUser.set(userJson);
       } catch (e) {
         print(e);
       }
@@ -99,6 +109,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Widget UsernameInput() {
     return TextFormField(
+      controller: _usernameController,
       decoration: InputDecoration(
         labelText: "Username",
         border: UnderlineInputBorder(),

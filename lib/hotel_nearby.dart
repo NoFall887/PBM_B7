@@ -111,7 +111,8 @@ class _HotelNearbyState extends State<HotelNearby> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => HotelDetail(),
+                      // builder: (context) => HotelDetail(),
+                      builder: (context) => Container(),
                     ),
                   );
                 },

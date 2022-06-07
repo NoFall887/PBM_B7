@@ -31,7 +31,10 @@ class MyApp extends StatelessWidget {
               ),
             );
           } else if (snapshot.hasData) {
-            return Navbar();
+            final String email = snapshot.data!.email!;
+            return Navbar(
+              userEmail: email,
+            );
           } else {
             return LoginForm();
           }
