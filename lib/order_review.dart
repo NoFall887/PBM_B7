@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
+import 'package:tourly/payment_page.dart';
 import 'package:tourly/widgets/hotel_checkin_checkout.dart';
 import 'package:tourly/widgets/main_btn.dart';
 import 'package:tourly/widgets/room_facility.dart';
@@ -70,7 +71,14 @@ class OrderReview extends StatelessWidget {
                 SizedBox(
                   height: 32,
                 ),
-                MainBtn(btnText: "Lanjut ke pembayaran", onPressed: () {}),
+                MainBtn(
+                    btnText: "Lanjut ke pembayaran",
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => PaymentPage())));
+                    }),
                 SizedBox(
                   height: 16,
                 )

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tourly/database/user.dart';
 import 'package:tourly/history_page.dart';
+import 'package:tourly/setting.dart';
 
 class ProfilePage extends StatelessWidget {
   final String userEmail;
@@ -35,7 +36,7 @@ class ProfilePage extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final String username = snapshot.data!.nama;
-              return buildPage(username);
+              return buildPage(username, context);
             } else {
               return Center(
                 child: CircularProgressIndicator(),
@@ -45,7 +46,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget buildPage(String username) {
+  Widget buildPage(String username, BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
       child: Column(
@@ -64,13 +65,11 @@ class ProfilePage extends StatelessWidget {
           SizedBox(height: 10),
           WhiteLongButton(
             displayText: "Pengaturan",
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: ((context) => Setting())));
+            },
           ),
-          WhiteLongButton(
-              displayText: "Logout",
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-              })
         ],
       ),
     );

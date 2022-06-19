@@ -14,7 +14,7 @@ class Hotel {
       nama: json['nama'],
       diskon: json['diskon'],
       harga: json['harga'],
-      rating: json['rating'],
+      rating: json['rating'].toDouble(),
       alamat: json['alamat'],
       deskripsi: json['deskripsi'],
       fasilitas: json['fasilitas'],

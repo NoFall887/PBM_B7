@@ -36,6 +36,7 @@ class _LoginFormState extends State<LoginForm> {
             email: _emailController.text, password: _passwordController.text);
       } catch (e) {
         print(e);
+        
       }
       Navigator.of(context, rootNavigator: true).pop();
     }

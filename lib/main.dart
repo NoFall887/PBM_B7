@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:tourly/login_page.dart';
 import 'package:tourly/bottom_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tourly/payment_page.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await initializeDateFormatting();
   runApp(MyApp());
 }
 

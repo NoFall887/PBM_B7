@@ -5,6 +5,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:tourly/hotel_nearby.dart';
 import 'package:tourly/widgets/main_btn.dart';
+import 'package:collection/collection.dart';
+import 'package:tourly/widgets/room_dropdown.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -15,7 +17,10 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   var date = DateTime.now();
+  final TextEditingController _minController = TextEditingController();
+  final TextEditingController _maxController = TextEditingController();
 
+  String _selectedItem = "";
   Future<Null> _selectedDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -29,45 +34,66 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
+  setSelected(String value) {
+    setState(() {
+      _selectedItem = value;
+    });
+  }
+
   _filter(BuildContext context) {
     showModalBottomSheet(
+      isScrollControlled: true,
+      isDismissible: true,
       context: context,
       builder: (context) {
-        return Container(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: TextField(
-                      decoration: const InputDecoration(labelText: "Min"),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: TextField(
+                        controller: _minController,
+                        decoration: const InputDecoration(labelText: "Min"),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                      ),
                     ),
-                  ),
-                  const Expanded(
-                    flex: 1,
-                    child: Text(
-                      " - ",
-                      textAlign: TextAlign.center,
+                    const Expanded(
+                      flex: 1,
+                      child: Text(
+                        " - ",
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: TextField(
-                      decoration: const InputDecoration(labelText: "Max"),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    Expanded(
+                      flex: 2,
+                      child: TextField(
+                        controller: _maxController,
+                        decoration: const InputDecoration(labelText: "Max"),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              TextButton(onPressed: () {}, child: const Text("OK"))
-            ],
+                  ],
+                ),
+                const SizedBox(height: 30),
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("OK"))
+              ],
+            ),
           ),
         );
       },
@@ -101,7 +127,9 @@ class _SearchPageState extends State<SearchPage> {
                 const SizedBox(height: 4),
                 tanggal(context),
                 const SizedBox(height: 4),
-                kamar(),
+                // kamar(),
+                // roomDropDown(),
+                RoomDropdown(selected: _selectedItem, setSelected: setSelected),
                 const SizedBox(height: 20),
                 filterBtn(context),
                 const SizedBox(height: 50),

@@ -8,72 +8,15 @@ import 'package:tourly/hotel_detail_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
+  final CollectionReference _hotelReference =
+      FirebaseFirestore.instance.collection("hotel");
 
-  final dummyItem = [
-    "https://cdn.pixabay.com/photo/2016/04/25/22/41/cat-1353325_960_720.jpg",
-    "https://cdn.pixabay.com/photo/2017/11/30/12/35/cat-2988354_960_720.jpg",
-    "https://t4.ftcdn.net/jpg/00/90/42/33/240_F_90423384_EPURKnsID1eC8GX5lZU84nscT3MQSh6X.jpg",
-  ];
-
-  final dummyHotelList = <Map>[
-    {
-      'link':
-          "https://img.inews.co.id/media/600/files/inews_new/2021/10/08/hotel_citradream_bintaro.jpg",
-      'rating': 4,
-      'nama': "Grand Darmo Suite",
-      'harga': 283000,
-      'diskon': 250000
-    },
-    {
-      'link':
-          "https://img.inews.co.id/media/600/files/inews_new/2021/10/08/hotel_citradream_bintaro.jpg",
-      'rating': 4.5,
-      'nama': "Ibis Surabaya City",
-      'harga': 440000,
-      'diskon': 300000
-    },
-    {
-      'link':
-          "https://imgcy.trivago.com/c_lfill,d_dummy.jpeg,e_sharpen:60,f_auto,h_450,q_auto,w_450/itemimages/68/47/6847396.jpeg",
-      'rating': 5,
-      'nama': "Midtown Hotel Surabaya",
-      'harga': 450000,
-      'diskon': 370000
-    },
-    {
-      'link':
-          "https://img.inews.co.id/media/600/files/inews_new/2021/10/08/hotel_citradream_bintaro.jpg",
-      'rating': 4,
-      'nama': "Favehotel Tunjungan",
-      'harga': 400000,
-      'diskon': 375000
-    },
-    {
-      'link':
-          "https://media-cdn.tripadvisor.com/media/photo-s/0f/76/68/b1/twin-room.jpg",
-      'rating': 4.2,
-      'nama': "Garden Palace Hotel Surabaya",
-      'harga': 440000,
-      'diskon': 250000
-    },
-    {
-      'link':
-          "https://t4.ftcdn.net/jpg/00/90/42/33/240_F_90423384_EPURKnsID1eC8GX5lZU84nscT3MQSh6X.jpg",
-      'rating': 4.5,
-      'nama': "Novotel Samator East Surabay",
-      'harga': 450000,
-      'diskon': 370000
-    },
-  ];
-
-  Future<List<Hotel>> readHotels() async {
-    final CollectionReference collectionReference =
-        FirebaseFirestore.instance.collection('hotel');
+  Future<List<Hotel>> readHotels(Query query) async {
     try {
-      final query = collectionReference.where("diskon", isGreaterThan: 0);
       return await query.get().then((value) async {
         return await Future.wait(value.docs.map((doc) async {
           Hotel data = Hotel.create(doc.data());
+          print(data);
           data.fasilitas = await Future.wait(data.fasilitas!
               .map((reference) async =>
                   await reference.get().then((doc) => doc.data()!['nama']))
@@ -82,6 +25,7 @@ class HomePage extends StatelessWidget {
         }).toList());
       });
     } catch (e) {
+      print(e);
       rethrow;
     }
   }
@@ -98,10 +42,27 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            hotelCarouselSlider(),
+            FutureBuilder<List<Hotel>>(
+                future: readHotels(_hotelReference.orderBy('rating').limit(5)),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return Text("Something went wrong");
+                  }
+                  if (snapshot.hasData) {
+                    final List<Hotel> hotels = snapshot.data;
+                    return hotelCarouselSlider(hotels);
+                  } else {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 50),
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                }),
             SizedBox(height: 20),
-            FutureBuilder(
-              future: readHotels(),
+            FutureBuilder<List<Hotel>>(
+              future:
+                  readHotels(_hotelReference.where('diskon', isGreaterThan: 0)),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasError) {
                   print(snapshot.error);
@@ -111,7 +72,8 @@ class HomePage extends StatelessWidget {
                   final List<Hotel> hotels = snapshot.data;
                   return discountListView(hotels);
                 } else {
-                  return Center(
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 50),
                     child: CircularProgressIndicator(),
                   );
                 }
@@ -282,7 +244,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget HotelName(Map data, BuildContext context) {
+  Widget hotelName(String data, BuildContext context) {
     return Positioned(
       bottom: 0,
       child: Container(
@@ -291,7 +253,7 @@ class HomePage extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         alignment: Alignment.center,
         child: Text(
-          data["nama"],
+          data,
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -301,24 +263,24 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget hotelCarouselSlider() {
+  Widget hotelCarouselSlider(List<Hotel> hotelList) {
     return Stack(
       alignment: Alignment.center,
       children: [
         CarouselSlider.builder(
-          itemCount: dummyHotelList.length,
+          itemCount: hotelList.length,
           carouselController: buttonCarouselController,
           itemBuilder: (context, itemIndex, index) {
-            var data = dummyHotelList[itemIndex];
+            var data = hotelList[itemIndex];
             return Stack(
               alignment: Alignment.center,
               children: [
                 Image.network(
-                  data["link"],
+                  data.foto![0],
                   fit: BoxFit.cover,
                   height: MediaQuery.of(context).size.height,
                 ),
-                HotelName(data, context),
+                hotelName(data.nama, context),
               ],
             );
           },

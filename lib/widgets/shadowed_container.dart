@@ -1,15 +1,22 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 class ShadowedContainer extends StatelessWidget {
   final Widget child;
-  const ShadowedContainer({Key? key, required this.child}) : super(key: key);
+  bool usePadding;
+  ShadowedContainer({Key? key, required this.child, this.usePadding = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      clipBehavior: Clip.hardEdge,
       child: child,
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
+      padding: usePadding
+          ? const EdgeInsets.symmetric(vertical: 14, horizontal: 10)
+          : null,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),

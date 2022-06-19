@@ -1,6 +1,12 @@
+import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tourly/database/hotel.dart';
+import 'package:tourly/database/room_type.dart';
 import 'package:tourly/order_review.dart';
 import 'package:tourly/widgets/main_btn.dart';
+import 'package:collection/collection.dart';
+import 'package:tourly/widgets/room_dropdown.dart';
 
 class Reservasi extends StatefulWidget {
   final String namaHotel;
@@ -14,6 +20,8 @@ class _ReservasiState extends State<Reservasi> {
   final TextEditingController _namaPenghuniController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _dayController = TextEditingController();
+
+  String _selectedItem = "";
   DateTime date = DateTime.now();
 
   Future<Null> _selectedDate(BuildContext context) async {
@@ -27,6 +35,12 @@ class _ReservasiState extends State<Reservasi> {
         date = picked;
       });
     }
+  }
+
+  setSelected(String value) {
+    setState(() {
+      _selectedItem = value;
+    });
   }
 
   @override
@@ -56,7 +70,10 @@ class _ReservasiState extends State<Reservasi> {
                 const SizedBox(height: 4),
                 tanggal(context),
                 const SizedBox(height: 4),
+                // roomDropDownBuilder(),
+                RoomDropdown(selected: _selectedItem, setSelected: setSelected),
                 const SizedBox(height: 20),
+                email(),
                 const SizedBox(height: 50),
                 MainBtn(
                   btnText: "Lanjutkan pesanan",
@@ -132,6 +149,41 @@ class _ReservasiState extends State<Reservasi> {
               border: const UnderlineInputBorder(),
               labelText: "1 Malam",
             ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget email() {
+    return Row(
+      children: [
+        Icon(
+          Icons.email_rounded,
+          size: 25,
+          color: Colors.blue.shade400,
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: TextFormField(
+            // initialValue: (FirebaseAuth.instance.currentUser != null
+            //     ? FirebaseAuth.instance.currentUser?.email
+            //     : ""),
+            decoration: InputDecoration(
+              labelText: "Email",
+              border: UnderlineInputBorder(),
+            ),
+            controller: _emailController,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            keyboardType: TextInputType.emailAddress,
+            validator: (input) {
+              if (input!.isEmpty) {
+                return "Email tidak boleh kosong";
+              } else if (!EmailValidator.validate(input)) {
+                return "Email tidak valid";
+              }
+              return null;
+            },
           ),
         ),
       ],
