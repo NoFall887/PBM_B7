@@ -13,11 +13,11 @@ class RoomDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<List<RoomType>>(
       future: RoomType.getData(),
-      initialData: [RoomType(jumlahKasur: 0, nama: "Pilih kamar", id: "")],
+      initialData: [
+        RoomType(jumlahKasur: 0, nama: "Pilih kamar", id: "", smoking: false)
+      ],
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasError) {
-          print(snapshot.error);
-
           return Text("Something went wrong");
         }
 
@@ -38,7 +38,9 @@ class RoomDropdown extends StatelessWidget {
                 items: rooms
                     .mapIndexed((index, e) => DropdownMenuItem(
                           enabled: (index != 0),
-                          child: Text(e.nama),
+                          child: e.smoking
+                              ? Text(e.nama + " - smoking")
+                              : Text(e.nama),
                           value: e.id,
                         ))
                     .toList(),

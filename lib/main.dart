@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:tourly/login_page.dart';
 import 'package:tourly/bottom_navigation_bar.dart';
@@ -9,7 +10,9 @@ import 'package:intl/intl.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await initializeDateFormatting();
   runApp(MyApp());
 }

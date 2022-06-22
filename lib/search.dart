@@ -4,6 +4,7 @@ import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:tourly/hotel_nearby.dart';
+import 'package:tourly/search_result_page.dart';
 import 'package:tourly/widgets/main_btn.dart';
 import 'package:collection/collection.dart';
 import 'package:tourly/widgets/room_dropdown.dart';
@@ -19,8 +20,11 @@ class _SearchPageState extends State<SearchPage> {
   var date = DateTime.now();
   final TextEditingController _minController = TextEditingController();
   final TextEditingController _maxController = TextEditingController();
+  final TextEditingController _penginapanController = TextEditingController();
+  final TextEditingController _malamController = TextEditingController();
 
   String _selectedItem = "";
+
   Future<Null> _selectedDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -127,8 +131,6 @@ class _SearchPageState extends State<SearchPage> {
                 const SizedBox(height: 4),
                 tanggal(context),
                 const SizedBox(height: 4),
-                // kamar(),
-                // roomDropDown(),
                 RoomDropdown(selected: _selectedItem, setSelected: setSelected),
                 const SizedBox(height: 20),
                 filterBtn(context),
@@ -136,7 +138,24 @@ class _SearchPageState extends State<SearchPage> {
                 MainBtn(
                   btnText: "Cari",
                   onPressed: () {
-                    // Navigator.pop(context);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: ((context) {
+                      String name = _penginapanController.text;
+                      int? max;
+                      int? min;
+
+                      if (_maxController.text.isNotEmpty) {
+                        max = int.parse(_maxController.text);
+                      }
+                      if (_minController.text.isNotEmpty) {
+                        min = int.parse(_minController.text);
+                      }
+                      return SearchResultPage(
+                        name: _penginapanController.text,
+                        priceMax: max,
+                        priceMin: min,
+                      );
+                    })));
                   },
                 )
               ],
@@ -159,6 +178,7 @@ class _SearchPageState extends State<SearchPage> {
         const SizedBox(width: 10),
         Expanded(
           child: TextFormField(
+            controller: _penginapanController,
             decoration: const InputDecoration(
                 border: UnderlineInputBorder(), labelText: "Penginapan"),
           ),
@@ -206,27 +226,9 @@ class _SearchPageState extends State<SearchPage> {
         Expanded(
           flex: 3,
           child: TextFormField(
+            controller: _malamController,
             decoration: const InputDecoration(
                 border: const UnderlineInputBorder(), labelText: "1 Malam"),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget kamar() {
-    return Row(
-      children: [
-        Icon(
-          Icons.meeting_room_rounded,
-          size: 25,
-          color: Colors.blue.shade400,
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: TextFormField(
-            decoration: const InputDecoration(
-                border: UnderlineInputBorder(), labelText: "Pilihan kamar"),
           ),
         ),
       ],

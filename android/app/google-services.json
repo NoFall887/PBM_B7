@@ -29,6 +29,13 @@
             {
               "client_id": "867183499231-o6l8g0tcqqrnkkvjmhapqql4rgdi9cph.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "867183499231-gv4v6mt5ljgnqou9vgi2of53segmqbqh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tourly"
+              }
             }
           ]
         }
