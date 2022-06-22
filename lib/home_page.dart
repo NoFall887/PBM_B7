@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:tourly/database/facility.dart';
 import 'package:tourly/database/hotel.dart';
 import 'package:tourly/hotel_detail_page.dart';
 
@@ -15,12 +16,7 @@ class HomePage extends StatelessWidget {
     try {
       return await query.get().then((value) async {
         return await Future.wait(value.docs.map((doc) async {
-          Hotel data = Hotel.create(doc.data());
-          print(data);
-          data.fasilitas = await Future.wait(data.fasilitas!
-              .map((reference) async =>
-                  await reference.get().then((doc) => doc.data()!['nama']))
-              .toList());
+          Hotel data = Hotel.create(Facility.castFacilities(doc.data()));
           return data;
         }).toList());
       });
@@ -43,7 +39,9 @@ class HomePage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             FutureBuilder<List<Hotel>>(
-                future: readHotels(_hotelReference.orderBy('rating').limit(5)),
+                future: readHotels((_hotelReference
+                    .orderBy('rating', descending: true)
+                    .limit(5))),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasError) {
                     print(snapshot.error);
@@ -53,9 +51,11 @@ class HomePage extends StatelessWidget {
                     final List<Hotel> hotels = snapshot.data;
                     return hotelCarouselSlider(hotels);
                   } else {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 50),
-                      child: CircularProgressIndicator(),
+                    return Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 50),
+                        child: CircularProgressIndicator(),
+                      ),
                     );
                   }
                 }),
@@ -138,7 +138,7 @@ class HomePage extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          thumbnailImage(data.foto![0]),
+                          thumbnailImage(data.foto[0]),
                           SizedBox(width: 10),
                           briefDetail(data, currencyFormat),
                         ],
@@ -276,7 +276,7 @@ class HomePage extends StatelessWidget {
               alignment: Alignment.center,
               children: [
                 Image.network(
-                  data.foto![0],
+                  data.foto[0],
                   fit: BoxFit.cover,
                   height: MediaQuery.of(context).size.height,
                 ),

@@ -4,13 +4,14 @@ class hotelFacilityItem extends StatelessWidget {
   final String facilityName;
   hotelFacilityItem({Key? key, required this.facilityName}) : super(key: key);
 
-  Map _facilityIcon = {
-    "restoran": IconTemplate(icon: Icons.restaurant),
-    "gym": IconTemplate(icon: Icons.fitness_center_rounded),
-    "wifi": IconTemplate(icon: Icons.wifi),
-    "kolam": IconTemplate(icon: Icons.pool_rounded),
-    "laundry": IconTemplate(icon: Icons.local_laundry_service_rounded),
-    "parkir": IconTemplate(icon: Icons.local_parking_rounded)
+  final Map _facilityIcon = {
+    "restoran": const IconTemplate(icon: Icons.restaurant),
+    "gym": const IconTemplate(icon: Icons.fitness_center_rounded),
+    "wifi": const IconTemplate(icon: Icons.wifi),
+    "kolam": const IconTemplate(icon: Icons.pool_rounded),
+    "laundry": const IconTemplate(icon: Icons.local_laundry_service_rounded),
+    "parkir": const IconTemplate(icon: Icons.local_parking_rounded),
+    "bar": const IconTemplate(icon: Icons.local_bar_rounded),
   };
 
   @override
@@ -26,7 +27,7 @@ class hotelFacilityItem extends StatelessWidget {
             child: _facilityIcon[facilityName],
             radius: 30,
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(facilityName)
         ],
       ),

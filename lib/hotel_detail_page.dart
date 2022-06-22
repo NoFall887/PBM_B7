@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
@@ -8,13 +9,6 @@ import 'package:tourly/database/hotel.dart';
 import 'package:tourly/reservasi.dart';
 import 'package:tourly/widgets/colors.dart';
 import 'package:tourly/widgets/facility.dart';
-
-const hotelPhotoList = <String>[
-  "https://cdn.pixabay.com/photo/2019/08/19/13/58/bed-4416515__340.jpg",
-  "https://cdn.pixabay.com/photo/2019/08/19/13/58/bed-4416515__340.jpg",
-  "https://cdn.pixabay.com/photo/2019/08/19/13/58/bed-4416515__340.jpg",
-  "https://cdn.pixabay.com/photo/2019/08/19/13/58/bed-4416515__340.jpg",
-];
 
 class HotelDetail extends StatefulWidget {
   final Hotel hotel;
@@ -28,6 +22,19 @@ class _HotelDetailState extends State<HotelDetail> {
   final NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'id_ID', symbol: 'Rp.', decimalDigits: 0);
   int activeIndex = 0;
+
+  Future<List<String>> getFacilities() async {
+    return await Future.wait<String>(widget.hotel.fasilitas.map<Future<String>>(
+        (DocumentReference<Map<String, dynamic>> facilityRef) async {
+      return await facilityRef
+          .get()
+          .then<String>((DocumentSnapshot<Map<String, dynamic>> doc) {
+        String facilityName = doc.data()!["nama"];
+        return facilityName;
+      });
+    }).toList());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,10 +76,10 @@ class _HotelDetailState extends State<HotelDetail> {
       alignment: Alignment.center,
       children: [
         CarouselSlider.builder(
-          itemCount: widget.hotel.foto!.length,
+          itemCount: widget.hotel.foto.length,
           itemBuilder: (context, itemIndex, index) {
             print(widget.hotel.foto);
-            var data = widget.hotel.foto![itemIndex].toString();
+            var data = widget.hotel.foto[itemIndex].toString();
             return Container(
               width: MediaQuery.of(context).size.width,
               child: Image.network(
@@ -98,7 +105,7 @@ class _HotelDetailState extends State<HotelDetail> {
           bottom: 20,
           child: AnimatedSmoothIndicator(
             activeIndex: activeIndex,
-            count: widget.hotel.foto!.length,
+            count: widget.hotel.foto.length,
             effect: WormEffect(
               activeDotColor: Colors.blue.shade300,
               dotHeight: 11,
@@ -200,15 +207,27 @@ class _HotelDetailState extends State<HotelDetail> {
         SizedBox(height: 12),
         SizedBox(
           height: 100,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: widget.hotel.fasilitas!.length,
-            itemBuilder: (BuildContext context, int index) {
-              return hotelFacilityItem(
-                facilityName: widget.hotel.fasilitas![index],
-              );
-            },
-          ),
+          child: FutureBuilder<List<String>>(
+              future: getFacilities(),
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+                if (snapshot.hasData) {
+                  List<String> data = snapshot.data!;
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return hotelFacilityItem(
+                        facilityName: data[index],
+                      );
+                    },
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }),
         ),
       ],
     );
