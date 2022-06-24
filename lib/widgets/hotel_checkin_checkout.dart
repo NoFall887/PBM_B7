@@ -11,10 +11,9 @@ class HotelCheckinCheckout extends StatelessWidget {
   final String? location;
   final DateTime dateCheckin;
   final DateTime dateCheckout;
-  late String days = DateTimeRange(start: dateCheckin, end: dateCheckout)
-      .duration
-      .inDays
-      .toString();
+  late String days =
+      (DateTimeRange(start: dateCheckin, end: dateCheckout).duration.inDays + 1)
+          .toString();
   HotelCheckinCheckout({
     Key? key,
     this.actionBtn,
@@ -98,7 +97,7 @@ class HotelCheckinCheckout extends StatelessWidget {
             (isCheckin ? CrossAxisAlignment.start : CrossAxisAlignment.end),
         children: [
           Text(
-            "Check-in",
+            isCheckin ? "Check-in" : "Check-out",
             style: TextStyle(fontSize: 12),
           ),
           Text(

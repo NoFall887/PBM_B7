@@ -3,9 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tourly/database/hotel.dart';
+import 'package:tourly/database/user.dart';
 import 'package:tourly/reservasi.dart';
 import 'package:tourly/widgets/colors.dart';
 import 'package:tourly/widgets/facility.dart';
@@ -277,7 +279,7 @@ class _HotelDetailState extends State<HotelDetail> {
                   context,
                   MaterialPageRoute(
                       builder: ((context) => Reservasi(
-                            namaHotel: widget.hotel.nama,
+                            hotelData: widget.hotel,
                           ))),
                 );
               },

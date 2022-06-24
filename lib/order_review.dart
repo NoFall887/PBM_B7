@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
+import 'package:tourly/database/hotel.dart';
+import 'package:tourly/database/order.dart';
+import 'package:tourly/database/room_type.dart';
 import 'package:tourly/payment_page.dart';
 import 'package:tourly/widgets/hotel_checkin_checkout.dart';
 import 'package:tourly/widgets/main_btn.dart';
 import 'package:tourly/widgets/room_facility.dart';
 import 'package:tourly/widgets/shadowed_container.dart';
 
-Map<String, dynamic> hotelData = {
-  "name": "Primebiz Surabaya",
-  "rating": 4.5,
-  "location": "Gayungan, Surabaya, Jawa Timur",
-  "facility": <String>["Kolam", "Parkir", "Wifi", "Gym", "Restoran"],
-  "description":
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  "checkin": DateTime.now(),
-  'checkout': DateTime.now().add(Duration(days: 1)),
-};
-
-Map<String, dynamic> roomData = {
-  "name": "Standard Doubled Bed - Smoking",
-  "type": "double bed",
-  "guest": 2,
-  "photo":
-      "https://img.inews.co.id/media/600/files/inews_new/2021/10/08/hotel_citradream_bintaro.jpg",
-  "faciity": ['wifi', 'sarapan'],
-};
-
 class OrderReview extends StatelessWidget {
-  const OrderReview({Key? key}) : super(key: key);
+  final Hotel hotelData;
+  final RoomType roomType;
+  final DateTime checkIn;
+  final DateTime checkOut;
+  final String namaPenghuni;
+  final int durasi;
+  final Order order;
+  const OrderReview({
+    Key? key,
+    required this.hotelData,
+    required this.roomType,
+    required this.checkIn,
+    required this.checkOut,
+    required this.namaPenghuni,
+    required this.durasi,
+    required this.order,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +55,9 @@ class OrderReview extends StatelessWidget {
             child: Column(
               children: [
                 HotelCheckinCheckout(
-                  hotelName: hotelData['name'],
-                  dateCheckin: hotelData['checkin'],
-                  dateCheckout: hotelData['checkout'],
+                  hotelName: hotelData.nama,
+                  dateCheckin: checkIn,
+                  dateCheckout: checkOut,
                 ),
                 SizedBox(
                   height: 8,
@@ -77,7 +76,9 @@ class OrderReview extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: ((context) => PaymentPage())));
+                              builder: ((context) => PaymentPage(
+                                    order: order,
+                                  ))));
                     }),
                 SizedBox(
                   height: 16,
@@ -96,7 +97,7 @@ class OrderReview extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            roomData["name"],
+            roomType.nama + (roomType.smoking ? " - smoking" : ""),
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
@@ -105,11 +106,12 @@ class OrderReview extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          typeAndGuest("Tipe kamar", roomData["type"]),
+          typeAndGuest("Tipe kamar", roomType.nama),
           SizedBox(
             height: 4,
           ),
-          typeAndGuest("Tamu", roomData["guest"].toString() + " orang/kamar"),
+          typeAndGuest(
+              "Tamu", roomType.jumlahKasur.toString() + " orang/kamar"),
           SizedBox(
             height: 16,
           ),
@@ -139,8 +141,7 @@ class OrderReview extends StatelessWidget {
             child: AspectRatio(
               aspectRatio: 4 / 3,
               child: Image.network(
-                // roomData["photo"],
-                "https://img.inews.co.id/media/600/files/inews_new/2021/10/08/hotel_citradream_bintaro.jpg",
+                hotelData.foto[0],
                 fit: BoxFit.cover,
               ),
             ),
@@ -170,7 +171,7 @@ class OrderReview extends StatelessWidget {
           height: 8,
         ),
         ReadMoreText(
-          hotelData["description"],
+          hotelData.deskripsi!,
           trimLines: 9,
           colorClickableText: Colors.blue.shade300,
           trimMode: TrimMode.Line,

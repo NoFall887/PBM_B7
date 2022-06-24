@@ -31,9 +31,10 @@ class SearchResultPage extends StatelessWidget {
 
     return await query.get().then((QuerySnapshot<Map<String, dynamic>> docs) {
       return docs.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+        String id = doc.id;
         Map<String, dynamic> data = doc.data();
         data = Facility.castFacilities(data);
-        return Hotel.create(data);
+        return Hotel.create(data, id);
       }).toList();
     });
   }

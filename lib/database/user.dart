@@ -1,11 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class CreateUser {
   final String nama;
-  final String email;
+  String? username;
+  String? email;
+  String? id;
+  CreateUser({required this.nama, this.email, this.username, this.id});
 
-  CreateUser({required this.nama, required this.email});
+  static CreateUser fromFirestore(
+      Map<String, dynamic> data, String? id, String? username) {
+    return CreateUser(
+        nama: data["nama"], email: data["email"], id: id, username: username);
+  }
 
-  static CreateUser fromJson(json) {
-    return CreateUser(nama: json['nama'], email: json['email']);
+  static Stream<CreateUser>? getUserData(String? email, String? username) {
+    if (email == null) {
+      return null;
+    }
+    return FirebaseFirestore.instance
+        .collection("users")
+        .where("email", isEqualTo: email)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => fromFirestore(doc.data(), doc.id, username))
+            .elementAt(0));
   }
 
   Map<String, dynamic> toJson() {

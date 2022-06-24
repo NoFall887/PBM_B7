@@ -129,9 +129,9 @@ class _SearchPageState extends State<SearchPage> {
               children: [
                 penginapanTerdekat(),
                 const SizedBox(height: 4),
-                tanggal(context),
+                // tanggal(context),
                 const SizedBox(height: 4),
-                RoomDropdown(selected: _selectedItem, setSelected: setSelected),
+                // RoomDropdown(selected: _selectedItem, setSelected: setSelected),
                 const SizedBox(height: 20),
                 filterBtn(context),
                 const SizedBox(height: 50),
@@ -197,43 +197,43 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget tanggal(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          Icons.date_range_rounded,
-          size: 25,
-          color: Colors.blue.shade400,
-        ),
-        Expanded(
-          flex: 7,
-          child: TextButton(
-            onPressed: () {
-              _selectedDate(context);
-            },
-            style: TextButton.styleFrom(alignment: Alignment.bottomLeft),
-            child: Text(
-              date.toLocal().toString().split(' ')[0],
-              style: const TextStyle(
-                color: Colors.black54,
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 3,
-          child: TextFormField(
-            controller: _malamController,
-            decoration: const InputDecoration(
-                border: const UnderlineInputBorder(), labelText: "1 Malam"),
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget tanggal(BuildContext context) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       Icon(
+  //         Icons.date_range_rounded,
+  //         size: 25,
+  //         color: Colors.blue.shade400,
+  //       ),
+  //       Expanded(
+  //         flex: 7,
+  //         child: TextButton(
+  //           onPressed: () {
+  //             _selectedDate(context);
+  //           },
+  //           style: TextButton.styleFrom(alignment: Alignment.bottomLeft),
+  //           child: Text(
+  //             date.toLocal().toString().split(' ')[0],
+  //             style: const TextStyle(
+  //               color: Colors.black54,
+  //               fontSize: 18,
+  //               fontWeight: FontWeight.w400,
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //       Expanded(
+  //         flex: 3,
+  //         child: TextFormField(
+  //           controller: _malamController,
+  //           decoration: const InputDecoration(
+  //               border: const UnderlineInputBorder(), labelText: "1 Malam"),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget filterBtn(BuildContext context) {
     return Row(

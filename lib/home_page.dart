@@ -16,7 +16,8 @@ class HomePage extends StatelessWidget {
     try {
       return await query.get().then((value) async {
         return await Future.wait(value.docs.map((doc) async {
-          Hotel data = Hotel.create(Facility.castFacilities(doc.data()));
+          String id = doc.id;
+          Hotel data = Hotel.create(Facility.castFacilities(doc.data()), id);
           return data;
         }).toList());
       });

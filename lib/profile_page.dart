@@ -1,28 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tourly/database/user.dart';
 import 'package:tourly/history_page.dart';
 import 'package:tourly/setting.dart';
 
 class ProfilePage extends StatelessWidget {
-  final String userEmail;
-
-  const ProfilePage({Key? key, required this.userEmail}) : super(key: key);
-
-  // Stream
-  Future<CreateUser?> readUser() async {
-    final CollectionReference collectionReference =
-        FirebaseFirestore.instance.collection('users');
-
-    final query = collectionReference.where("email", isEqualTo: userEmail);
-    final snapshot = await query.get();
-
-    return CreateUser.fromJson(snapshot.docs.single);
-  }
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final CreateUser? user = Provider.of<CreateUser?>(context);
+    if (user == null) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("Akun Saya"),
@@ -31,18 +25,7 @@ class ProfilePage extends StatelessWidget {
           icon: Icon(Icons.arrow_back_rounded),
         ),
       ),
-      body: FutureBuilder<CreateUser?>(
-          future: readUser(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final String username = snapshot.data!.nama;
-              return buildPage(username, context);
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          }),
+      body: buildPage(user.nama, context),
     );
   }
 

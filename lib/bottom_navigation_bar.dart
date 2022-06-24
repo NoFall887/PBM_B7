@@ -6,8 +6,7 @@ import 'package:tourly/search.dart';
 import 'package:tourly/wishlist.dart';
 
 class Navbar extends StatefulWidget {
-  final String userEmail;
-  Navbar({required this.userEmail});
+  Navbar({Key? key});
   @override
   State<Navbar> createState() => _NavbarState();
 }
@@ -20,7 +19,7 @@ class _NavbarState extends State<Navbar> {
     SearchPage(),
     HomePage(),
     Wishlist(),
-    ProfilePage(userEmail: widget.userEmail),
+    ProfilePage(),
   ];
 
   @override

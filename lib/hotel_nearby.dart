@@ -41,11 +41,12 @@ class _HotelNearbyState extends State<HotelNearby> {
 
     return stream.map((List<DocumentSnapshot<Map<String, dynamic>>> docList) {
       return docList.map((DocumentSnapshot<Map<String, dynamic>> doc) {
+        String id = doc.id;
         Map<String, dynamic>? data = Facility.castFacilities(doc.data());
         GeoPoint lokasiHotel = data["koordinat"]["geopoint"];
         double jarak = point.kmDistance(
             lat: lokasiHotel.latitude, lng: lokasiHotel.longitude);
-        return Hotel.createNearby(data, jarak);
+        return Hotel.createNearby(data, jarak, id);
       }).toList();
     });
   }
