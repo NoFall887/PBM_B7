@@ -17,7 +17,7 @@ import 'package:tourly/widgets/main_btn.dart';
 class Transaction_Suc extends StatelessWidget {
   Transaction_Suc({Key? key}) : super(key: key);
 
-  Future<List<Order>> loadSuccessOrderData(CreateUser user) {
+  Stream<Future<List<Order>>> loadSuccessOrderData(CreateUser user) {
     DocumentReference userReference =
         FirebaseFirestore.instance.collection("user").doc(user.id);
     return FirebaseFirestore.instance
@@ -27,15 +27,10 @@ class Transaction_Suc extends StatelessWidget {
           "user",
           isEqualTo: userReference,
         )
-        .get()
-        .then((docs) => Future.wait(docs.docs.map((doc) async {
-              Map<String, dynamic> orderData = doc.data();
-
-              Order result =
-                  await Order.createFromFirestore(orderData, user, doc.id);
-
-              return result;
-            }).toList()));
+        .snapshots()
+        .map((snapshot) => Future.wait(snapshot.docs
+            .map((doc) => Order.createFromFirestore(doc.data(), user, doc.id))
+            .toList()));
   }
 
   @override
@@ -47,18 +42,28 @@ class Transaction_Suc extends StatelessWidget {
         title: Text("Transaksi Berhasil"),
       ),
       body: (user != null
-          ? FutureBuilder<List<Order>>(
-              future: loadSuccessOrderData(user),
+          ? StreamBuilder<Future<List<Order>>>(
+              stream: loadSuccessOrderData(user),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
-                  List<Order> data = snapshot.data;
-                  return TiketListView(data);
+                  Future<List<Order>> orders = snapshot.data;
+                  return FutureBuilder<List<Order>>(
+                    future: orders,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData) {
+                        List<Order> data = snapshot.data;
+                        return TiketListView(data);
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  );
                 }
                 return Center(
                   child: CircularProgressIndicator(),
                 );
-              },
-            )
+              })
           : Center(
               child: CircularProgressIndicator(),
             )),

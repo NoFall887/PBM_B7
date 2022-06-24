@@ -32,15 +32,6 @@ class OngoingOrder extends StatelessWidget {
         .map((snapshot) => Future.wait(snapshot.docs
             .map((doc) => Order.createFromFirestore(doc.data(), user, doc.id))
             .toList()));
-    // .get()
-    // .then((docs) => Future.wait(docs.docs.map((doc) async {
-    //       Map<String, dynamic> orderData = doc.data();
-
-    //       Order result =
-    //           await Order.createFromFirestore(orderData, user, doc.id);
-
-    //       return result;
-    //     }).toList()));
   }
 
   @override
