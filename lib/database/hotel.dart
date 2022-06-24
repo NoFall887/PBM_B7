@@ -14,7 +14,7 @@ class Hotel {
 
   final double? jarak;
   final GeoPoint? koordinat;
-  static Hotel create(json, String id) {
+  static Hotel create(Map<String, dynamic> json, String id) {
     return Hotel(
       nama: json['nama'],
       diskon: json['diskon'],

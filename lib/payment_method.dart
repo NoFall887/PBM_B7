@@ -12,7 +12,7 @@ class PaymentMethod extends StatelessWidget {
         .get()
         .then((docs) {
       return docs.docs.map((doc) {
-        return PaymentMethodData.create(doc);
+        return PaymentMethodData.create(doc.data(), doc.id);
       }).toList();
     });
   }

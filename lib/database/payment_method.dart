@@ -6,8 +6,7 @@ class PaymentMethodData {
 
   PaymentMethodData({required this.id, required this.nama});
 
-  static PaymentMethodData create(
-      QueryDocumentSnapshot<Map<String, dynamic>> data) {
-    return PaymentMethodData(id: data.id, nama: data.data()["nama"]);
+  static PaymentMethodData create(Map<String, dynamic> data, String id) {
+    return PaymentMethodData(id: id, nama: data["nama"]);
   }
 }

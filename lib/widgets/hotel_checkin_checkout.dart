@@ -57,15 +57,17 @@ class HotelCheckinCheckout extends StatelessWidget {
                     size: 16,
                     color: Colors.black54,
                   ),
-                  Text(
-                    location!,
-                    style: TextStyle(color: Colors.black54, fontSize: 13),
+                  Flexible(
+                    child: Text(
+                      location!,
+                      style: TextStyle(color: Colors.black54, fontSize: 13),
+                    ),
                   )
                 ])
               : Container(
                   height: 0,
                 ),
-          // const SizedBox(height: 8),
+
           Divider(
             thickness: 2,
             color: Colors.black12,

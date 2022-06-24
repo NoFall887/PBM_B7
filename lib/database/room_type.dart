@@ -16,4 +16,12 @@ class RoomType {
       required this.id,
       required this.smoking,
       required this.harga});
+  static RoomType create(Map<String, dynamic> data, String id) {
+    return RoomType(
+        jumlahKasur: data["jumlah kasur"],
+        nama: data["nama"],
+        id: id,
+        smoking: data["smoking"],
+        harga: data["harga"]);
+  }
 }

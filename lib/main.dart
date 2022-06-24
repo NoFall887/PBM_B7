@@ -41,11 +41,7 @@ class AppWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final User? user = Provider.of<User?>(context);
-    // if (user == null) {
-    //   return Center(
-    //     child: CircularProgressIndicator(),
-    //   );
-    // }
+
     final String? username = user?.displayName;
     final String? email = user?.email;
 

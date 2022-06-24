@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tourly/database/hotel.dart';
 import 'package:tourly/database/order.dart';
 import 'package:tourly/database/room_type.dart';
+import 'package:tourly/database/user.dart';
 import 'package:tourly/order_review.dart';
 import 'package:tourly/widgets/main_btn.dart';
 import 'package:collection/collection.dart';
@@ -73,7 +75,7 @@ class _ReservasiState extends State<Reservasi> {
     getData();
   }
 
-  proccessOrder() {
+  proccessOrder(CreateUser? user) {
     final bool isValid = _formKey.currentState!.validate();
     if (isValid) {
       Navigator.push(context, MaterialPageRoute(builder: ((context) {
@@ -97,6 +99,7 @@ class _ReservasiState extends State<Reservasi> {
               jumlah: int.parse(_dayController.text),
               namaPenghuni: _namaPenghuniController.text,
               orderDate: DateTime.now(),
+              user: user!,
               roomType: _selectedItem),
         );
       })));
@@ -124,6 +127,8 @@ class _ReservasiState extends State<Reservasi> {
 
   @override
   Widget build(BuildContext context) {
+    final CreateUser? user = Provider.of<CreateUser?>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pesan Hotel'),
@@ -160,7 +165,7 @@ class _ReservasiState extends State<Reservasi> {
                 const SizedBox(height: 50),
                 MainBtn(
                   btnText: "Lanjutkan pesanan",
-                  onPressed: proccessOrder,
+                  onPressed: () => proccessOrder(user),
                 )
               ],
             ),

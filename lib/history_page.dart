@@ -1,6 +1,7 @@
 // import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:tourly/ongoing_order.dart';
 import 'package:tourly/transaction_succes.dart';
 
 class HistoryPage extends StatelessWidget {
@@ -28,7 +29,10 @@ class HistoryPage extends StatelessWidget {
             SizedBox(height: 30),
             WhiteLongButton(
               displayText: "Transaksi sedang berlangsung",
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: ((context) => OngoingOrder())));
+              },
             ),
             SizedBox(height: 30),
             WhiteLongButton(
