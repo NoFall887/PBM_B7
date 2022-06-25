@@ -54,6 +54,7 @@ dependencies:
   slide_countdown: ^0.2.8
   geoflutterfire: ^3.0.3
   provider: ^6.0.3
+  firebase_storage: ^10.2.18
 dev_dependencies:
   flutter_test:
     sdk: flutter

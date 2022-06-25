@@ -25,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -64,6 +61,16 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyBFSF7Fe-_N2aSbaYrmWnV5Ohy0jhd8Gr4',
+    appId: '1:867183499231:ios:c7dac9ccb43ec514ca566a',
+    messagingSenderId: '867183499231',
+    projectId: 'tourly-app',
+    storageBucket: 'tourly-app.appspot.com',
+    iosClientId: '867183499231-gv4v6mt5ljgnqou9vgi2of53segmqbqh.apps.googleusercontent.com',
+    iosBundleId: 'com.example.tourly',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBFSF7Fe-_N2aSbaYrmWnV5Ohy0jhd8Gr4',
     appId: '1:867183499231:ios:c7dac9ccb43ec514ca566a',
     messagingSenderId: '867183499231',

@@ -1,18 +1,12 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:readmore/readmore.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tourly/database/order.dart';
 import 'package:tourly/database/user.dart';
 import 'package:tourly/ulasan.dart';
 import 'package:tourly/widgets/colors.dart';
-import 'package:tourly/widgets/facility.dart';
 import 'package:tourly/widgets/hotel_checkin_checkout.dart';
-import 'package:tourly/widgets/main_btn.dart';
 
 class Transaction_Suc extends StatelessWidget {
   Transaction_Suc({Key? key}) : super(key: key);
@@ -20,6 +14,7 @@ class Transaction_Suc extends StatelessWidget {
   Stream<Future<List<Order>>> loadSuccessOrderData(CreateUser user) {
     DocumentReference userReference =
         FirebaseFirestore.instance.collection("user").doc(user.id);
+
     return FirebaseFirestore.instance
         .collection("pesanan")
         .where("selesai", isEqualTo: true)
@@ -28,9 +23,14 @@ class Transaction_Suc extends StatelessWidget {
           isEqualTo: userReference,
         )
         .snapshots()
-        .map((snapshot) => Future.wait(snapshot.docs
-            .map((doc) => Order.createFromFirestore(doc.data(), user, doc.id))
-            .toList()));
+        .map((snapshot) => Future.wait(snapshot.docs.map((doc) {
+              try {
+                return Order.createFromFirestore(doc.data(), user, doc.id);
+              } catch (e) {
+                print(e);
+                rethrow;
+              }
+            }).toList()));
   }
 
   @override
@@ -83,13 +83,13 @@ class Transaction_Suc extends StatelessWidget {
           rating: data.hotel.rating.toDouble(),
           dateCheckin: data.checkIn,
           dateCheckout: data.checkOut,
-          actionBtn: ulasanBtn(context),
+          actionBtn: ulasanBtn(context, data),
         );
       },
     );
   }
 
-  Widget ulasanBtn(BuildContext context) {
+  Widget ulasanBtn(BuildContext context, Order order) {
     return ElevatedButton(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(MyColor.oren),
@@ -103,7 +103,11 @@ class Transaction_Suc extends StatelessWidget {
         ),
       ),
       onPressed: () => Navigator.push(
-          context, MaterialPageRoute(builder: ((context) => Ulasan()))),
+          context,
+          MaterialPageRoute(
+              builder: ((context) => Ulasan(
+                    order: order,
+                  )))),
       child: Text("Ulasan"),
     );
   }

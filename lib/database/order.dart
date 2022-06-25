@@ -3,6 +3,7 @@ import 'package:tourly/database/facility.dart';
 import 'package:tourly/database/hotel.dart';
 import 'package:tourly/database/payment_method.dart';
 import 'package:tourly/database/room_type.dart';
+import 'package:tourly/database/ulasan.dart';
 import 'package:tourly/database/user.dart';
 
 class Order {
@@ -19,7 +20,7 @@ class Order {
   PaymentMethodData? paymentMethodData;
   final bool isDone;
   final CreateUser user;
-  String? reviewId;
+  UlasanData? review;
 
   Order({
     required this.checkIn,
@@ -30,7 +31,7 @@ class Order {
     required this.hotel,
     required this.roomType,
     required this.namaPenghuni,
-    this.reviewId,
+    this.review,
     this.paymentMethodData,
     this.isDone = false,
     required this.user,
@@ -66,6 +67,16 @@ class Order {
     PaymentMethodData paymentMethodData =
         PaymentMethodData.create(paymentData!, paymentReference.id);
 
+    // fetch ulasan
+    UlasanData? ulasan;
+    if (orderData.containsKey("ulasan")) {
+      DocumentReference<Map<String, dynamic>> ulasanReference =
+          orderData["ulasan"];
+      Map<String, dynamic>? ulasanData =
+          await ulasanReference.snapshots().first.then((value) => value.data());
+      ulasan = UlasanData.create(ulasanData!, ulasanReference.id);
+    }
+
     return Order(
       checkIn: orderData["checkin"].toDate(),
       checkOut: orderData["checkout"].toDate(),
@@ -80,6 +91,7 @@ class Order {
       user: user,
       paymentMethodData: paymentMethodData,
       id: id,
+      review: ulasan,
     );
   }
 

@@ -1,26 +1,28 @@
-// ignore_for_file: unused_import, use_key_in_widget_constructors, unused_local_variable, prefer_const_literals_to_create_immutables, prefer_const_constructors, deprecated_member_use, sized_box_for_whitespace, avoid_print
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:tourly/main.dart';
+import 'package:tourly/ulasan.dart';
 
 class Upload extends StatefulWidget {
+  Upload({Key? key}) : super(key: key);
+
   @override
   State<Upload> createState() => _UploadState();
 }
 
 class _UploadState extends State<Upload> {
-  XFile? image;
-
   final ImagePicker picker = ImagePicker();
+
+  @override
 
   //we can upload image from camera or from gallery based on parameter
   Future getImage(ImageSource media) async {
-    var img = await picker.pickImage(source: media);
-
-    setState(() {
-      image = img;
-    });
+    XFile? img = await picker.pickImage(source: media);
+    print(img);
+    if (img == null) return;
+    Provider.of<UploadImageProvider>(context, listen: false).changeImage(img);
   }
 
   //show popup dialog
@@ -71,12 +73,13 @@ class _UploadState extends State<Upload> {
 
   @override
   Widget build(BuildContext context) {
-    return image != null ? fotoBtn() : uploadBtn(context);
+    XFile? image = Provider.of<UploadImageProvider>(context).image;
+    return image != null ? fotoBtn(image, context) : uploadBtn(context);
   }
 
-  Widget fotoBtn() {
+  Widget fotoBtn(XFile? image, BuildContext context) {
     return InkWell(
-      onTap: myAlert,
+      onTap: () => myAlert(),
       splashColor: Colors.white10,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
@@ -107,7 +110,7 @@ class _UploadState extends State<Upload> {
           ),
         ],
       ),
-      onPressed: myAlert,
+      onPressed: () => myAlert(),
       style: TextButton.styleFrom(
         backgroundColor: Colors.grey.withOpacity(0.2),
         primary: Colors.grey.withOpacity(0.2),
