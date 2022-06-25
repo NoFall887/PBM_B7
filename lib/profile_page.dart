@@ -20,10 +20,6 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Akun Saya"),
-        leading: IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.arrow_back_rounded),
-        ),
       ),
       body: buildPage(user.nama, context),
     );

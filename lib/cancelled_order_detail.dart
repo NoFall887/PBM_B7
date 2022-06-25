@@ -29,8 +29,9 @@ class CancelledOrderDetail extends StatelessWidget {
                 dateCheckout: order.checkOut,
               ),
               SizedBox(
-                height: 16,
+                height: 30,
               ),
+              invoiceSection(),
             ],
           ),
         ),
