@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tourly/cancelled_order_detail.dart';
 import 'package:tourly/database/facility.dart';
 import 'package:tourly/database/hotel.dart';
 import 'package:tourly/database/order.dart';
@@ -14,25 +15,35 @@ import 'package:tourly/widgets/hotel_checkin_checkout.dart';
 import 'package:tourly/widgets/main_btn.dart';
 import 'package:tourly/widgets/shadowed_container.dart';
 
-class OngoingOrder extends StatelessWidget {
-  const OngoingOrder({Key? key}) : super(key: key);
+class CancelledOrder extends StatelessWidget {
+  const CancelledOrder({Key? key}) : super(key: key);
 
-  Stream<Future<List<Order>>> loadOngoingOrderData(CreateUser user) {
+  Stream<Future<List<Order>>> loadCancelledOrderData(CreateUser user) {
     DocumentReference userReference =
         FirebaseFirestore.instance.collection("user").doc(user.id);
-    return FirebaseFirestore.instance
-        .collection("pesanan")
-        .where("batas", isGreaterThan: Timestamp.now())
+    CollectionReference<Map<String, dynamic>> orderReference =
+        FirebaseFirestore.instance.collection("pesanan");
+    return orderReference
+        .where("batas", isLessThan: Timestamp.now())
         .where("selesai", isEqualTo: false)
-        .where("batal", isEqualTo: false)
         .where(
           "user",
           isEqualTo: userReference,
         )
         .snapshots()
-        .map((snapshot) => Future.wait(snapshot.docs
-            .map((doc) => Order.createFromFirestore(doc.data(), user, doc.id))
-            .toList()));
+        .map((snapshot) async {
+      List<Order> temp1 = await Future.wait(snapshot.docs
+          .map((doc) => Order.createFromFirestore(doc.data(), user, doc.id))
+          .toList());
+
+      List<Order> temp2 = await orderReference
+          .where("batal", isEqualTo: true)
+          .get()
+          .then((snapshot) => Future.wait(snapshot.docs
+              .map((doc) => Order.createFromFirestore(doc.data(), user, doc.id))
+              .toList()));
+      return [...temp1, ...temp2];
+    });
   }
 
   @override
@@ -41,11 +52,11 @@ class OngoingOrder extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("Transaksi Berlangsung"),
+          title: Text("Transaksi Dibatalkan"),
         ),
         body: (user != null
             ? StreamBuilder<Future<List<Order>>>(
-                stream: loadOngoingOrderData(user),
+                stream: loadCancelledOrderData(user),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasData) {
                     Future<List<Order>> data = snapshot.data;
@@ -112,7 +123,7 @@ class OngoingOrder extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: ((context) => OngoingOrderDetail(order: order)),
+            builder: ((context) => CancelledOrderDetail(order: order)),
           ),
         );
       },

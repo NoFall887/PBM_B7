@@ -1,6 +1,7 @@
 // import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:tourly/cancelled_order.dart';
 import 'package:tourly/ongoing_order.dart';
 import 'package:tourly/transaction_succes.dart';
 
@@ -47,7 +48,12 @@ class HistoryPage extends StatelessWidget {
             SizedBox(height: 30),
             WhiteLongButton(
               displayText: "Transaksi dibatalkan",
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => CancelledOrder())));
+              },
             ),
             SizedBox(height: 30),
             SizedBox(height: 30),

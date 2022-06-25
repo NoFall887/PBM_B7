@@ -12,13 +12,22 @@ class OngoingOrderDetail extends StatelessWidget {
       NumberFormat.currency(locale: 'id_ID', symbol: 'Rp.', decimalDigits: 0);
   OngoingOrderDetail({Key? key, required this.order}) : super(key: key);
 
-  checkout() async {
+  checkout(BuildContext context) async {
     await FirebaseFirestore.instance
         .collection("pesanan")
         .doc(order.id)
         .update({
       "selesai": true,
     });
+    Navigator.pop(context);
+  }
+
+  cancelOrder(BuildContext context) async {
+    await FirebaseFirestore.instance
+        .collection("pesanan")
+        .doc(order.id)
+        .update({"batal": true});
+    Navigator.pop(context);
   }
 
   @override
@@ -43,7 +52,23 @@ class OngoingOrderDetail extends StatelessWidget {
             SizedBox(
               height: 30,
             ),
-            MainBtn(btnText: "Bayar sekarang", onPressed: checkout),
+            MainBtn(
+                btnText: "Bayar sekarang",
+                onPressed: () {
+                  checkout(context);
+                }),
+            SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                cancelOrder(context);
+              },
+              child: Text("Batalkan"),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.red,
+                  minimumSize: Size(MediaQuery.of(context).size.width, 40)),
+            )
           ],
         ),
       ),

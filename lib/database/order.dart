@@ -19,6 +19,7 @@ class Order {
   DateTime? limit;
   PaymentMethodData? paymentMethodData;
   final bool isDone;
+  final bool cancelled;
   final CreateUser user;
   UlasanData? review;
 
@@ -34,6 +35,7 @@ class Order {
     this.review,
     this.paymentMethodData,
     this.isDone = false,
+    this.cancelled = false,
     required this.user,
     this.limit,
     this.id,
@@ -88,6 +90,7 @@ class Order {
       namaPenghuni: orderData["nama penghuni"],
       limit: orderData["batas"].toDate(),
       isDone: orderData["selesai"],
+      cancelled: orderData["batal"],
       user: user,
       paymentMethodData: paymentMethodData,
       id: id,
@@ -116,6 +119,7 @@ class Order {
       "nama penghuni": namaPenghuni,
       "bank": paymentMethodReference,
       "selesai": isDone,
+      "batal": cancelled,
       "user": userReference,
       "batas": limit
     };
